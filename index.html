@@ -1,35 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Interactive Image Map</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <style>
-        #map { height: 600px; width: 800px; }
-    </style>
-</head>
-<body>
-    <div id="map"></div>
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script>
-        var map = L.map('map', {
-            minZoom: -2,
-            maxZoom: 4,
-            center: [0, 0],
-            zoom: 0,
-            crs: L.CRS.Simple
-        });
-
-        var bounds = [[-500, -500], [500, 500]];
-        var image = L.imageOverlay('atlas-map.png', bounds).addTo(map);
-        map.fitBounds(bounds);
-
-        // Example: Adding an interactive marker
-        L.marker([0, 0]).addTo(map)
-            .bindPopup("You clicked here!");
-
-        map.on('click', function (e) {
-            alert("Coordinates: " + e.latlng);
-        });
-    </script>
-</body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + Vue + TS</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
 </html>

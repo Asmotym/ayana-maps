@@ -1,0 +1,32 @@
+name: ViteJS Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-js:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🧱 Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20.12.2'
+
+      - name: 📦 Install dependencies
+        run: npm install
+
+      - name: 🏗️ Build dependencies
+        run: npm build
+
+      - name: 📤 Upload build artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: js-build
+          path: dist/
