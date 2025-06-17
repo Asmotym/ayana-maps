@@ -1,5 +1,12 @@
 name: ViteJS Build
 
+env:
+  VITE_DISCORD_CLIENT_ID: "1384473602908360734"
+  DISCORD_CLIENT_ID: "1384473602908360734"
+  DISCORD_CLIENT_SECRET: "MNMhzbQBU8eX_51Ug9JOcUFq9CRmORyY"
+  VITE_BACKEND_URL: "https://atlas-maps.github.io/atlas-maps"
+  VITE_REDIRECT_URI: "https://atlas-maps.github.io/atlas-maps/auth/callback"
+
 on:
   push:
     branches: [main]
