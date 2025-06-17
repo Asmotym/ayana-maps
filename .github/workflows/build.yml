@@ -29,14 +29,14 @@ jobs:
           node-version: '20.12.2'
 
       - name: 🔑 Set up environment variables
+        env:
+            DISCORD_CLIENT_SECRET: ${{ secrets.DISCORD_CLIENT_SECRET }}
         run: |
             echo "DISCORD_CLIENT_ID=1384473602908360734" >> .env
             echo "VITE_DISCORD_CLIENT_ID=1384473602908360734" >> .env
             echo "DISCORD_CLIENT_SECRET=$DISCORD_CLIENT_SECRET" >> .env
             echo "VITE_BACKEND_URL=https://atlas-maps.github.io/atlas-maps" >> .env
             echo "VITE_REDIRECT_URI=https://atlas-maps.github.io/atlas-maps/auth/callback" >> .env
-        env:
-          DISCORD_CLIENT_SECRET: ${{ secrets.DISCORD_CLIENT_SECRET }}
 
       - name: 📦 Install dependencies
         run: npm install
