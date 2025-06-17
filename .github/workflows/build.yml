@@ -36,7 +36,7 @@ jobs:
             echo "VITE_BACKEND_URL=https://atlas-maps.github.io/atlas-maps" >> .env
             echo "VITE_REDIRECT_URI=https://atlas-maps.github.io/atlas-maps/auth/callback" >> .env
         env:
-          DISCORD_CLIENT_SECRET: ${{ vars.DISCORD_CLIENT_SECRET }}
+          DISCORD_CLIENT_SECRET: ${{ env.DISCORD_CLIENT_SECRET }}
 
       - name: 📦 Install dependencies
         run: npm install
