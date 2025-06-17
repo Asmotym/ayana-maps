@@ -9,7 +9,7 @@ export const getBaseUrl = (): string => {
   }
   
   // Fallback for SSR or non-browser environments
-  return import.meta.env.VITE_BASE_URL || 'http://localhost:5173'
+  return import.meta.env.VITE_BASE_URL
 }
 
 export const getBackendUrl = (): string => {
@@ -17,17 +17,11 @@ export const getBackendUrl = (): string => {
   if (import.meta.env.VITE_BACKEND_URL) {
     return import.meta.env.VITE_BACKEND_URL
   }
-  
-  // Dynamic backend URL based on current host
-  if (typeof window !== 'undefined') {
-    const protocol = window.location.protocol
-    const hostname = window.location.hostname
-    const port = import.meta.env.VITE_BACKEND_PORT || '3001'
-    return `${protocol}//${hostname}:${port}`
-  }
-  
-  // Fallback for development
-  return 'http://localhost:3001'
+
+  const protocol = window.location.protocol
+  const hostname = window.location.hostname
+  const port = import.meta.env.VITE_BACKEND_PORT
+  return `${protocol}//${hostname}:${port}`
 }
 
 export const getRedirectUri = (): string => {
