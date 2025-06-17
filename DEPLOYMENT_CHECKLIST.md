@@ -22,7 +22,7 @@ Ensure these files exist:
 ```
 netlify/
 ├── functions/
-│   ├── auth-discord-token.js  ✅
+│   ├── auth-discord-token.js  ✅ (Uses native fetch, no axios)
 │   └── test.js               ✅
 └── netlify.toml              ✅
 ```
@@ -104,6 +104,9 @@ curl -X POST https://your-site.netlify.app/api/auth/discord/token \
 ### Issue: CORS errors
 **Solution**: Ensure `FRONTEND_URL` environment variable is set correctly
 
+### Issue: Runtime.ImportModuleError with axios
+**Solution**: ✅ FIXED - Function now uses native `fetch` instead of axios
+
 ## 🔍 Debug Commands
 
 ```bash
@@ -118,4 +121,15 @@ ls -la netlify/functions/
 
 # Check netlify.toml syntax
 cat netlify.toml
-``` 
+
+# Test OAuth function locally
+curl -X POST http://localhost:8888/api/auth/discord/token \
+  -H "Content-Type: application/json" \
+  -d '{"code":"test"}'
+```
+
+## ✅ Recent Fixes
+
+- **Fixed axios import error**: Replaced axios with native `fetch` in the OAuth function
+- **Removed axios dependency**: No longer needed in package.json
+- **Improved error handling**: Better error responses and logging 

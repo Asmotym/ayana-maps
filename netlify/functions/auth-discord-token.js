@@ -1,5 +1,3 @@
-import axios from 'axios'
-
 export const handler = async (event, context) => {
   // Enable CORS
   const headers = {
@@ -47,30 +45,51 @@ export const handler = async (event, context) => {
       return 'http://localhost:5173/auth/callback'
     }
 
-    const tokenResponse = await axios.post('https://discord.com/api/v10/oauth2/token', 
-      new URLSearchParams({
+    // Exchange code for token using fetch
+    const tokenResponse = await fetch('https://discord.com/api/v10/oauth2/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
         client_id: process.env.DISCORD_CLIENT_ID,
         client_secret: process.env.DISCORD_CLIENT_SECRET,
         grant_type: 'authorization_code',
         code: code,
         redirect_uri: getRedirectUri(),
-      }), {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
+      })
+    })
+
+    if (!tokenResponse.ok) {
+      const errorData = await tokenResponse.text()
+      console.error('Discord token exchange failed:', errorData)
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ error: 'Failed to exchange code for token' })
       }
-    )
+    }
 
-    const { access_token } = tokenResponse.data
+    const tokenData = await tokenResponse.json()
+    const { access_token } = tokenData
 
-    // Get user info
-    const userResponse = await axios.get('https://discord.com/api/v10/users/@me', {
+    // Get user info using fetch
+    const userResponse = await fetch('https://discord.com/api/v10/users/@me', {
       headers: {
         Authorization: `Bearer ${access_token}`,
       },
     })
 
-    const userData = userResponse.data
+    if (!userResponse.ok) {
+      console.error('Discord user info fetch failed:', await userResponse.text())
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ error: 'Failed to get user info' })
+      }
+    }
+
+    const userData = await userResponse.json()
     const user = {
       id: userData.id,
       username: userData.username,
@@ -85,7 +104,7 @@ export const handler = async (event, context) => {
       body: JSON.stringify({ user, access_token })
     }
   } catch (error) {
-    console.error('Discord OAuth error:', error.response?.data || error.message)
+    console.error('Discord OAuth error:', error.message)
     return {
       statusCode: 500,
       headers,
