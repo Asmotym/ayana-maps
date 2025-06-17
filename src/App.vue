@@ -6,7 +6,7 @@ import DiscordAuth from './components/DiscordAuth.vue'
 <template>
   <div class="app">
     <header class="header">
-      <h1>Atlas Maps</h1>
+      <h1>Ayana Maps</h1>
       <DiscordAuth />
     </header>
     
