@@ -35,8 +35,9 @@ jobs:
             echo "DISCORD_CLIENT_ID=1384473602908360734" >> .env
             echo "VITE_DISCORD_CLIENT_ID=1384473602908360734" >> .env
             echo "DISCORD_CLIENT_SECRET=$DISCORD_CLIENT_SECRET" >> .env
-            echo "VITE_BACKEND_URL=https://asmotym.github.io/atlas-maps" >> .env
-            echo "VITE_REDIRECT_URI=https://asmotym.github.io/atlas-maps/auth/callback" >> .env
+            echo "VITE_BACKEND_URL=https://asmotym.github.io" >> .env
+            echo "VITE_REDIRECT_URI=https://asmotym.github.io/auth/callback" >> .env
+            echo "FRONTEND_URL=https://asmotym.github.io" >> .env
 
       - name: 📦 Install dependencies
         run: npm install

@@ -13,8 +13,6 @@ const getCorsOrigin = () => {
   if (process.env.FRONTEND_URL) {
     return process.env.FRONTEND_URL
   }
-  // Fallback to localhost for development
-  return 'http://localhost:5173'
 }
 
 app.use(cors({
@@ -25,7 +23,7 @@ app.use(cors({
 app.use(express.json())
 
 // Discord OAuth token exchange endpoint
-app.post('/atlas-maps/api/auth/discord/token', async (req, res) => {
+app.post('/api/auth/discord/token', async (req, res) => {
   try {
     const { code } = req.body
     
@@ -39,7 +37,7 @@ app.post('/atlas-maps/api/auth/discord/token', async (req, res) => {
         return process.env.DISCORD_REDIRECT_URI
       }
       // Fallback to localhost for development
-      return 'http://localhost:5173/atlas-maps/auth/callback'
+      return 'http://localhost:5173/auth/callback'
     }
 
     const tokenResponse = await axios.post('https://discord.com/api/v10/oauth2/token', 
@@ -84,5 +82,5 @@ app.post('/atlas-maps/api/auth/discord/token', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
   console.log(`CORS origin: ${getCorsOrigin()}`)
-  console.log(`Redirect URI: ${process.env.DISCORD_REDIRECT_URI || 'http://localhost:5173/atlas-maps/auth/callback'}`)
+  console.log(`Redirect URI: ${process.env.DISCORD_REDIRECT_URI}`)
 }) 
