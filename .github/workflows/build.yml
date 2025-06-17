@@ -1,12 +1,5 @@
 name: ViteJS Build
 
-env:
-  VITE_DISCORD_CLIENT_ID: "1384473602908360734"
-  DISCORD_CLIENT_ID: "1384473602908360734"
-  DISCORD_CLIENT_SECRET: "MNMhzbQBU8eX_51Ug9JOcUFq9CRmORyY"
-  VITE_BACKEND_URL: "https://atlas-maps.github.io/atlas-maps"
-  VITE_REDIRECT_URI: "https://atlas-maps.github.io/atlas-maps/auth/callback"
-
 on:
   push:
     branches: [main]
@@ -34,6 +27,14 @@ jobs:
         uses: actions/setup-node@v4.3.0
         with:
           node-version: '20.12.2'
+
+      - name: 🔑 Set up environment variables
+        run: |
+            echo "DISCORD_CLIENT_ID=1384473602908360734" >> .env
+            echo "VITE_DISCORD_CLIENT_ID=1384473602908360734" >> .env
+            echo "DISCORD_CLIENT_SECRET=${{ github.DISCORD_CLIENT_SECRET }}" >> .env
+            echo "VITE_BACKEND_URL=https://atlas-maps.github.io/atlas-maps" >> .env
+            echo "VITE_REDIRECT_URI=https://atlas-maps.github.io/atlas-maps/auth/callback" >> .env
 
       - name: 📦 Install dependencies
         run: npm install
