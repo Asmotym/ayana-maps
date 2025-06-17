@@ -6,11 +6,21 @@
 [build.environment]
   NODE_VERSION = "18"
 
+# Test function
 [[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/:splat"
+  from = "/api/test"
+  to = "/.netlify/functions/test"
   status = 200
+  force = true
 
+# Discord OAuth function
+[[redirects]]
+  from = "/api/auth/discord/token"
+  to = "/.netlify/functions/auth-discord-token"
+  status = 200
+  force = true
+
+# SPA fallback
 [[redirects]]
   from = "/*"
   to = "/index.html"
