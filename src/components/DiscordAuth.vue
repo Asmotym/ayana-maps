@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { getBackendUrl, getRedirectUri, getApiUrl } from '../utils/urls'
+import { getRedirectUri, getApiUrl } from '../utils/urls'
 
 interface DiscordUser {
   id: string
@@ -38,9 +38,8 @@ const user = ref<DiscordUser | null>(null)
 const loading = ref(false)
 
 // Discord OAuth configuration
-const DISCORD_CLIENT_ID = import.meta.env.VITE_DISCORD_CLIENT_ID || 'YOUR_DISCORD_CLIENT_ID'
+const DISCORD_CLIENT_ID = import.meta.env.VITE_DISCORD_CLIENT_ID
 const REDIRECT_URI = getRedirectUri()
-const BACKEND_URL = getBackendUrl()
 const DISCORD_API_URL = 'https://discord.com/api/v10'
 
 const login = () => {
