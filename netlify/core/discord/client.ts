@@ -1,5 +1,3 @@
-import { Client } from 'discord.js';
-
 export type DiscordAuth = {
     tokenType: string;
     accessToken: string;
@@ -16,11 +14,6 @@ export type DiscordUser = {
 
 export class DiscordClient {
     protected baseUrl: string = "https://discord.com/api/v10";
-    protected client: Client;
-
-    constructor() {
-        this.client = new Client({ intents: [] });
-    }
 
     public async getUserInfo(auth: DiscordAuth): Promise<DiscordUser> {
         console.info('[DiscordClient] Getting user info', { auth });
