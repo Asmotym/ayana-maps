@@ -11,6 +11,7 @@
     "build:netlify": "npm run build"
   },
   "dependencies": {
+    "@netlify/neon": "^0.1.0",
     "dotenv": "^16.5.0",
     "vue": "^3.5.13",
     "vue-router": "^4.5.1"
@@ -25,6 +26,7 @@
     "netlify-cli": "^17.0.0",
     "typescript": "~5.7.2",
     "vite": "^6.2.0",
-    "vue-tsc": "^2.2.4"
+    "vue-tsc": "^2.2.4",
+    "@netlify/functions": "4.1.6"
   }
 }

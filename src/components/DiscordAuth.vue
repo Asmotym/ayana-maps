@@ -14,7 +14,6 @@
         <img :src="user.avatar" :alt="user.username" class="user-avatar" />
         <div class="user-details">
           <h4>{{ user.username }}</h4>
-          <p class="user-discriminator">#{{ user.discriminator }}</p>
         </div>
       </div>
       <button @click="logout" class="logout-btn">Logout</button>
@@ -25,21 +24,13 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { getRedirectUri, getApiUrl } from '../utils/urls'
-
-interface DiscordUser {
-  id: string
-  username: string
-  discriminator: string
-  avatar: string
-  email?: string
-}
+import { type DiscordAuth, type DiscordUser } from '../../netlify/core/discord/client';
 
 const user = ref<DiscordUser | null>(null)
 const loading = ref(false)
 
 // Discord OAuth configuration
-const DISCORD_CLIENT_ID = import.meta.env.VITE_DISCORD_CLIENT_ID
-const REDIRECT_URI = getRedirectUri()
+const DISCORD_CLIENT_ID = import.meta.env.VITE_DISCORD_CLIENT_ID;
 const DISCORD_API_URL = 'https://discord.com/api/v10'
 
 const login = () => {
@@ -48,8 +39,8 @@ const login = () => {
   
   const params = new URLSearchParams({
     client_id: DISCORD_CLIENT_ID,
-    redirect_uri: REDIRECT_URI,
-    response_type: 'code',
+    redirect_uri: getRedirectUri(),
+    response_type: 'token',
     scope: 'identify email',
     state: state
   })
@@ -59,70 +50,84 @@ const login = () => {
 
 const logout = () => {
   user.value = null
-  localStorage.removeItem('discord_access_token')
-  localStorage.removeItem('discord_user')
+  localStorage.removeItem('discord_auth');
+  localStorage.removeItem('discord_user');
+  localStorage.removeItem('discord_oauth_state');
 }
 
 const generateRandomString = (length: number): string => {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-  let result = ''
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
   for (let i = 0; i < length; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length))
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
   }
-  return result
-}
-
-const exchangeCodeForToken = async (code: string): Promise<{ user: DiscordUser; access_token: string }> => {
-  const response = await fetch(getApiUrl('/auth/discord/token'), {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ code }),
-  })
-
-  if (!response.ok) {
-    throw new Error('Failed to exchange code for token')
-  }
-
-  return await response.json()
+  return result;
 }
 
 const handleAuthCallback = async () => {
-  const urlParams = new URLSearchParams(window.location.search)
-  const code = urlParams.get('code')
-  const state = urlParams.get('state')
-  const savedState = localStorage.getItem('discord_oauth_state')
+  const urlParams = new URLSearchParams(window.location.hash.slice(1));
 
-  if (code && state && state === savedState) {
-    try {
-      loading.value = true
-      const { user: userInfo, access_token } = await exchangeCodeForToken(code)
-      
-      localStorage.setItem('discord_access_token', access_token)
-      localStorage.setItem('discord_user', JSON.stringify(userInfo))
-      user.value = userInfo
-      
-      // Clean up URL
-      window.history.replaceState({}, document.title, window.location.pathname)
-    } catch (error) {
-      console.error('Auth error:', error)
-    } finally {
-      loading.value = false
-    }
+  // retrieve url params from the discord redirect login
+  const tokenType = urlParams.get('token_type') || '';
+  const accessToken = urlParams.get('access_token') || '';
+  const expiresIn = Number(urlParams.get('expires_in') || 0);
+  const scope = urlParams.get('scope') || '';
+  const state = urlParams.get('state') || '';
+  const auth = {
+    tokenType,
+    accessToken,
+    expiresIn,
+    scope,
+    state,
   }
+  
+  // retrieve saved state
+  const savedState = localStorage.getItem('discord_oauth_state');
+  
+  if (auth.state === savedState) {
+    // save auth to local storage
+    localStorage.setItem('discord_auth', JSON.stringify(auth));
+
+    // clean up url
+    window.history.replaceState({}, document.title, window.location.pathname);
+    
+    // retrieve user info
+    await fetchUserInfo(auth);
+  }
+}
+
+async function fetchUserInfo(auth: DiscordAuth) {
+  const userInfo = await fetch(getApiUrl('/discord'), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ ...auth, queryType: 'user' }),
+    });
+    const data = await userInfo.json();
+    if (!data || !data.success) {
+      throw new Error('[DiscordAuth] Failed to fetch user info');
+    }
+
+    localStorage.setItem('discord_user', JSON.stringify(data.data));
+    user.value = data.data;
 }
 
 onMounted(() => {
   // Check if user is already logged in
-  const savedUser = localStorage.getItem('discord_user')
+  const savedUser = localStorage.getItem('discord_user');
   if (savedUser) {
-    user.value = JSON.parse(savedUser)
+    user.value = JSON.parse(savedUser);
+  } else {
+    const auth = JSON.parse(localStorage.getItem('discord_auth') || '{}');
+    if (auth.accessToken) {
+      fetchUserInfo(auth);
+    }
   }
   
   // Handle OAuth callback
-  if (window.location.search.includes('code=')) {
-    handleAuthCallback()
+  if (window.location.hash.includes('token_type=')) {
+    handleAuthCallback();
   }
 })
 </script>
@@ -178,6 +183,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   gap: 12px;
+  color: black;
 }
 
 .user-avatar {
@@ -191,12 +197,6 @@ onMounted(() => {
   margin: 0;
   font-size: 16px;
   font-weight: 600;
-}
-
-.user-discriminator {
-  margin: 0;
-  font-size: 14px;
-  color: #6c757d;
 }
 
 .logout-btn {
