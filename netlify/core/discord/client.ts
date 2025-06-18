@@ -28,7 +28,7 @@ export class DiscordClient {
             throw new Error('Failed to get user info');
         }
 
-        const json = await userResponse.json();
+        const json = await userResponse.json() as DiscordUser & { global_name: string };
         const user: DiscordUser = {
             id: json.id,
             username: json.global_name,

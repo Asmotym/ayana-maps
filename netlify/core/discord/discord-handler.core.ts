@@ -11,7 +11,14 @@ export class DiscordHandler {
         'Access-Control-Allow-Credentials': 'true'
     }
     private discordClient: DiscordClient;
-    private body: DiscordAuth & { queryType: string };
+    private body: DiscordAuth & { queryType: string } = {
+        tokenType: '',
+        accessToken: '',
+        expiresIn: 0,
+        scope: '',
+        state: '',
+        queryType: 'user'
+    };
 
     constructor(event: HandlerEvent, context: HandlerContext) {
         this.event = event;
@@ -47,7 +54,7 @@ export class DiscordHandler {
             return {
                 statusCode: 400,
                 headers: this.headers,
-                body: JSON.stringify({ error: error.message })
+                body: JSON.stringify({ error: error instanceof Error ? error.message : 'Unknown error' })
             }
         }
     }
