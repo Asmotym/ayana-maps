@@ -3,7 +3,6 @@ import { DiscordAuth, DiscordClient } from "./client";
 
 export class DiscordHandler {
     private event: HandlerEvent;
-    private context: HandlerContext;
     private headers: Record<string, string> = {
         'Access-Control-Allow-Origin': process.env.FRONTEND_URL || '*',
         'Access-Control-Allow-Headers': 'Content-Type',
@@ -20,9 +19,8 @@ export class DiscordHandler {
         queryType: 'user'
     };
 
-    constructor(event: HandlerEvent, context: HandlerContext) {
+    constructor(event: HandlerEvent) {
         this.event = event;
-        this.context = context;
         this.discordClient = new DiscordClient();
     }
 
@@ -83,7 +81,7 @@ export class DiscordHandler {
     }
 }
 
-export function discordHandler(event: HandlerEvent, context: HandlerContext): Promise<HandlerResponse> {
-    const discordHandler = new DiscordHandler(event, context);
+export function discordHandler(event: HandlerEvent): Promise<HandlerResponse> {
+    const discordHandler = new DiscordHandler(event);
     return discordHandler.handle();
 }

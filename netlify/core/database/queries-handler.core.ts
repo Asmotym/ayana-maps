@@ -35,7 +35,7 @@ export class QueryHandler {
                 })
             };
         } catch (error) {
-            return this.returnErrorResponse(error);
+            return this.returnErrorResponse(error instanceof Error ? error : new Error('Unknown error'));
         }
     }
 
