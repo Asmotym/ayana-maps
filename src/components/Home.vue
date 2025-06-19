@@ -4,6 +4,7 @@ import HelloWorld from './HelloWorld.vue'
 import DiscordAuth from './DiscordAuth.vue'
 import { getDatabaseVersion, getTables } from '../database/database'
 import { getUsersRights, updateUsersRights } from '../database/queries/users-rights.query'
+import { getMapMarkers } from '../database/queries/map-markers.query'
 import type { DiscordUser } from '../../netlify/core/discord/client'
 
 // Reactive data for database results
@@ -23,6 +24,9 @@ async function performQuery(queryType: string, data?: object) {
       break
     case 'update_users_rights':
       dbData.value = await updateUsersRights(data)
+      break
+    case 'map_markers':
+      dbData.value = await getMapMarkers()
       break
   }
 }
@@ -63,6 +67,12 @@ onMounted(() => {
                             @click="performQuery('update_users_rights', { id: '1234567890', username: 'test', avatar: 'test' } as DiscordUser)"
                             class="query-btn">
                             Update Users Rights
+                        </button>
+                    </div>
+                    <h3>Map Markers Queries</h3>
+                    <div class="query-buttons">
+                        <button @click="performQuery('map_markers')" class="query-btn">
+                            Get Map Markers
                         </button>
                     </div>
                 </div>

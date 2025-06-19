@@ -2,6 +2,7 @@ import { HandlerEvent, HandlerResponse } from "@netlify/functions";
 import { tablesQuery } from "./queries/tables.query";
 import { versionQuery } from "./queries/version.query";
 import { usersRightsQuery } from "./queries/users-rights.query";
+import { mapMarkersQuery } from "./queries/map_markers.query";
 
 export class QueryHandler {
     private event: HandlerEvent;
@@ -45,6 +46,8 @@ export class QueryHandler {
                 return await tablesQuery();
             case 'users_rights':
                 return await usersRightsQuery(this.event);
+            case 'map_markers':
+                return await mapMarkersQuery(this.event);
             default:
                 throw new Error(`Unknown query type: ${this.queryType}`);
         }
