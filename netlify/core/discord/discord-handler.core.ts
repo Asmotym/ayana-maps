@@ -1,4 +1,4 @@
-import { HandlerEvent, HandlerContext, HandlerResponse } from "@netlify/functions";
+import { HandlerEvent, HandlerResponse } from "@netlify/functions";
 import { DiscordAuth, DiscordClient } from "./client";
 
 export class DiscordHandler {
