@@ -1,16 +1,14 @@
-import { HandlerEvent, HandlerContext, HandlerResponse } from "@netlify/functions";
+import { HandlerEvent, HandlerResponse } from "@netlify/functions";
 import { tablesQuery } from "./queries/tables.query";
 import { versionQuery } from "./queries/version.query";
 import { usersRightsQuery } from "./queries/users-rights.query";
 
 export class QueryHandler {
     private event: HandlerEvent;
-    private context: HandlerContext;
     private queryType: string = 'version';
 
-    constructor(event: HandlerEvent, context: HandlerContext) {
+    constructor(event: HandlerEvent) {
         this.event = event;
-        this.context = context;
     }
 
     public async handle(): Promise<HandlerResponse> {
@@ -46,7 +44,7 @@ export class QueryHandler {
             case 'tables':
                 return await tablesQuery();
             case 'users_rights':
-                return await usersRightsQuery(this.event, this.context);
+                return await usersRightsQuery(this.event);
             default:
                 throw new Error(`Unknown query type: ${this.queryType}`);
         }
@@ -93,7 +91,7 @@ export class QueryHandler {
     }
 }
 
-export function databaseQueriesHandler(event: HandlerEvent, context: HandlerContext): Promise<HandlerResponse> {
-    const queryHandler = new QueryHandler(event, context);
+export function databaseQueriesHandler(event: HandlerEvent): Promise<HandlerResponse> {
+    const queryHandler = new QueryHandler(event);
     return queryHandler.handle();
 }

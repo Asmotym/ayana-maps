@@ -3,13 +3,14 @@ import { ref, onMounted } from 'vue'
 import HelloWorld from './components/HelloWorld.vue'
 import DiscordAuth from './components/DiscordAuth.vue'
 import { getDatabaseVersion, getTables } from './database/database'
-import { getUsersRights } from './database/queries/users-rights.query'
+import { getUsersRights, updateUsersRights } from './database/queries/users-rights.query'
+import type { DiscordUser } from '../netlify/core/discord/client'
 
 // Reactive data for database results
 const dbData = ref<any>(null)
 
 // Function to query the database
-async function performQuery(queryType: string) {
+async function performQuery(queryType: string, data?: object) {
   switch (queryType) {
     case 'version':
       dbData.value = await getDatabaseVersion()
@@ -19,6 +20,9 @@ async function performQuery(queryType: string) {
       break
     case 'users_rights':
       dbData.value = await getUsersRights()
+      break
+    case 'update_users_rights':
+      dbData.value = await updateUsersRights(data)
       break
   }
 }
@@ -54,6 +58,9 @@ onMounted(() => {
           <div class="query-buttons">
             <button @click="performQuery('users_rights')" class="query-btn">
               Get Users Rights
+            </button>
+            <button @click="performQuery('update_users_rights', { id: '1234567890', username: 'test', avatar: 'test' } as DiscordUser)" class="query-btn">
+              Update Users Rights
             </button>
           </div>
         </div>

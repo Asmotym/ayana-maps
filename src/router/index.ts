@@ -6,11 +6,6 @@ const routes = [
     name: 'Home',
     component: () => import('../App.vue')
   },
-  {
-    path: '/auth/callback',
-    name: 'AuthCallback',
-    component: () => import('../App.vue')
-  }
 ]
 
 const router = createRouter({
