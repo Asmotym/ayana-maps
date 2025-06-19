@@ -38,10 +38,3 @@ export class DiscordClient {
         return user;
     }
 }
-
-export function getRedirectUri(): string {
-    if (!process.env.DISCORD_REDIRECT_URI) {
-        throw new Error('DISCORD_REDIRECT_URI is not set');
-    }
-    return process.env.DISCORD_REDIRECT_URI;
-}
