@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import HelloWorld from './HelloWorld.vue'
-import Header from './Header.vue'
-import QueriesTesting from './QueriesTesting.vue'
-import { DiscordService } from '../services/discord.service';
+import HelloWorld from '../HelloWorld.vue'
+import { DiscordService } from '../../services/discord.service';
 import { computed } from 'vue';
 
 const discordService = DiscordService.getInstance();
@@ -15,9 +13,7 @@ const notLoggedInMessage = "Please, login to Discord to use the app";
 </script>
 
 <template>
-  <Header />
   <div v-if="userLoggedIn">
-    <QueriesTesting />
     <HelloWorld />
   </div>
   <div v-else class="d-flex justify-center align-center" style="height: 100vh">

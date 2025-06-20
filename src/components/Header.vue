@@ -1,14 +1,39 @@
 <template>
     <v-app-bar>
-        <v-app-bar-title>Ayana Maps</v-app-bar-title>
-        <v-spacer></v-spacer>
-        <DiscordAuth />
+        <template v-slot:prepend>
+            <v-app-bar-title>Ayana Maps</v-app-bar-title>
+        </template>
+
+        <v-btn variant="text" :to="{ name: Routes.Home }">
+            <span>Home</span>
+        </v-btn>
+
+        <v-btn v-if="isUserLoggedIn" variant="text" :to="{ name: Routes.TestingGround }">
+            <span>Testing Ground</span>
+        </v-btn>
+
+        <template v-slot:append>    
+            <DiscordAuth />
+        </template>
     </v-app-bar>
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
 import DiscordAuth from './DiscordAuth.vue';
-import { VAppBar, VAppBarTitle, VSpacer } from 'vuetify/components';
+import { useRoute } from 'vue-router';
+import { Routes } from '../router';
+import type { DiscordUser } from '../../netlify/core/discord/client';
+
+interface HeaderProps {
+    user: DiscordUser | null;
+}
+
+const props = defineProps<HeaderProps>();
+
+const user = computed<DiscordUser | null>(() => props.user);
+
+const isUserLoggedIn = computed(() => user.value !== null);
 </script>
 
 <style scoped>

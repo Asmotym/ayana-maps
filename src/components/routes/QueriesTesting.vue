@@ -51,10 +51,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { getDatabaseVersion, getTables } from '../database/database'
-import { getUsersRights, updateUsersRights } from '../database/queries/users-rights.query'
-import { getMapMarkers } from '../database/queries/map-markers.query'
-import type { DiscordUser } from '../../netlify/core/discord/client'
+import { getDatabaseVersion, getTables } from '../../database/database'
+import { getUsersRights, updateUsersRights } from '../../database/queries/users-rights.query'
+import { getMapMarkers } from '../../database/queries/map-markers.query'
+import type { DiscordUser } from '../../../netlify/core/discord/client'
 
 // Reactive data for database results
 const dbData = ref<any>(null)
