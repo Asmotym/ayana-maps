@@ -21,7 +21,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import DiscordAuth from './DiscordAuth.vue';
-import { useRoute } from 'vue-router';
 import { Routes } from '../router';
 import type { DiscordUser } from '../../netlify/core/discord/client';
 
@@ -30,9 +29,7 @@ interface HeaderProps {
 }
 
 const props = defineProps<HeaderProps>();
-
 const user = computed<DiscordUser | null>(() => props.user);
-
 const isUserLoggedIn = computed(() => user.value !== null);
 </script>
 
