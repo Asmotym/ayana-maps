@@ -11,6 +11,7 @@
     "build:netlify": "npm run build"
   },
   "dependencies": {
+    "@mdi/font": "^7.4.47",
     "@netlify/neon": "^0.1.0",
     "@vuetify/loader-shared": "^2.1.0",
     "dotenv": "^16.5.0",

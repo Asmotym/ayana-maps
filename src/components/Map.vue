@@ -4,27 +4,20 @@
       :maxBounds="bounds" :maxZoom="4" @click="handleClick" style="position: absolute">
       <l-image-overlay :url="mapUrl" :bounds="bounds" />
       <!-- Add existing markers from the database -->
-      <l-marker v-for="marker in markers" :lat-lng="[marker.x, marker.y]" class="map-marker">
-        <l-tooltip class="map-marker__tooltip">{{ marker.label }}</l-tooltip>
-        <l-popup class="map-marker__popup">
-          <div class="map-marker__popup-content">
-            <h3 class="map-marker__popup-content-title">{{ marker.label }}</h3>
-            <p class="map-marker__popup-content-description">{{ marker.description || 'No description' }}</p>
-          </div>
-        </l-popup>
-      </l-marker>
+      <Marker v-for="marker in markers" :marker="marker" />
     </l-map>
   </v-container>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted, nextTick, onBeforeUnmount } from 'vue';
-import { LMap, LImageOverlay, LMarker, LTooltip, LPopup } from '@vue-leaflet/vue-leaflet';
+import { LMap, LImageOverlay } from '@vue-leaflet/vue-leaflet';
 import * as L from 'leaflet';
 import mapUrl from '../assets/map.jpg';
 import { getMapMarkers } from '../database/queries/map-markers.query';
 import type { MapMarker } from '../../netlify/core/database/queries/map_markers.query';
 import { VContainer } from 'vuetify/lib/components/index.mjs';
+import Marker from './map/Marker.vue';
 
 // initialize ref & computed
 const zoom = ref<number>(1);
@@ -36,6 +29,7 @@ const center = computed<L.PointExpression>(() => [mapHeight.value / 2, mapWidth.
 const markers = ref<MapMarker[]>([]);
 const mapRef = ref<typeof LMap | null>(null);
 const containerRef = ref<typeof VContainer | null>(null);
+
 
 async function loadMapDimensions(): Promise<void> {
   return new Promise<void>((resolve) => {
@@ -59,7 +53,7 @@ function updateMapDimensions() {
   if (mainRef && mapRef.value && containerRef.value) {
     const paddingTop = mainRef.computedStyleMap().get('padding-top') as { value: number, unit: string };
     console.log('[Map] Updating map dimensions', {
-      width: mainRef.clientWidth, 
+      width: mainRef.clientWidth,
       height: mainRef.clientHeight - paddingTop.value,
       mainRef,
       containerRef
@@ -71,16 +65,11 @@ function updateMapDimensions() {
 
 onMounted(async () => {
   await nextTick();
-  // setInterval(() => {
-  //   updateMapDimensions();
-  // }, 1000);
   updateMapDimensions();
   window.addEventListener('resize', updateMapDimensions);
 
   // setup map dimensions
   await loadMapDimensions();
-
-
 
   // load map markers
   markers.value = await getMapMarkers() as MapMarker[];
@@ -95,4 +84,5 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
+.leaflet-popup {}
 </style>
