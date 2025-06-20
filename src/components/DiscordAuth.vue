@@ -47,7 +47,7 @@ import { ref, onMounted } from 'vue'
 import { DiscordService } from '../services/discord.service';
 import type { DiscordUser } from '../../netlify/core/discord/client';
 
-const discordService = new DiscordService();
+const discordService = DiscordService.getInstance();
 const user = ref<DiscordUser | null>(null)
 
 function logout() {

@@ -1,19 +1,28 @@
 import type { DiscordAuth, DiscordUser } from "../../netlify/core/discord/client";
 import { getApiUrl, getRedirectUri } from "../utils/urls";
+import { ref, type Ref } from 'vue';
 
 export class DiscordService {
     private static readonly DISCORD_CLIENT_ID = import.meta.env.VITE_DISCORD_CLIENT_ID;
     private static readonly DISCORD_API_URL = 'https://discord.com/api/v10';
-    public user: DiscordUser | null = null;
+    public user: Ref<DiscordUser | null> = ref(null);
+    private static instance: DiscordService | null = null;
+
+    public static getInstance(): DiscordService {
+        if (!DiscordService.instance) {
+            DiscordService.instance = new DiscordService();
+        }
+        return DiscordService.instance;
+    }
 
     public async handleLogin(): Promise<DiscordUser | null> {
-        const savedUser = localStorage.getItem('discord_user');
-        if (savedUser) {
-            this.user = JSON.parse(savedUser);
+        const savedUser = this.getUser();
+        if (savedUser !== null) {
+            this.storeUser(savedUser);
         } else {
-            const auth = JSON.parse(localStorage.getItem('discord_auth') || '{}');
-            if (auth.accessToken) {
-                this.user = await this.fetchUserInfo(auth);
+            const auth = this.getAuth();
+            if (auth && auth.accessToken) {
+                await this.fetchUserInfo(auth);
             }
         }
         
@@ -22,12 +31,12 @@ export class DiscordService {
             await this.handleAuthCallback();
         }
 
-        return this.user;
+        return this.user.value;
     }
 
     public login() {
         const state = this.generateRandomString(32)
-        localStorage.setItem('discord_oauth_state', state)
+        this.storeOauthState(state)
 
         const params = new URLSearchParams({
             client_id: DiscordService.DISCORD_CLIENT_ID,
@@ -41,10 +50,9 @@ export class DiscordService {
     }
 
     public logout() {
-        this.user = null;
-        localStorage.removeItem('discord_auth');
-        localStorage.removeItem('discord_user');
-        localStorage.removeItem('discord_oauth_state');
+        this.removeAuth();
+        this.removeUser();
+        this.removeOauthState();
     }
 
     public async handleAuthCallback() {
@@ -65,17 +73,17 @@ export class DiscordService {
         }
 
         // retrieve saved state
-        const savedState = localStorage.getItem('discord_oauth_state');
+        const savedState = this.getOauthState();
 
         if (auth.state === savedState) {
             // save auth to local storage
-            localStorage.setItem('discord_auth', JSON.stringify(auth));
+            this.storeAuth(auth);
 
             // clean up url
             window.history.replaceState({}, document.title, window.location.pathname);
 
             // retrieve user info
-            this.user = await this.fetchUserInfo(auth);
+            await this.fetchUserInfo(auth);
         }
     }
 
@@ -92,7 +100,7 @@ export class DiscordService {
             throw new Error('[DiscordAuth] Failed to fetch user info');
         }
 
-        localStorage.setItem('discord_user', JSON.stringify(data.data));
+        this.storeUser(data.data);
         return data.data;
     }
 
@@ -103,5 +111,49 @@ export class DiscordService {
             result += chars.charAt(Math.floor(Math.random() * chars.length));
         }
         return result;
+    }
+
+    protected storeUser(user: DiscordUser) {
+        localStorage.setItem('discord_user', JSON.stringify(user));
+        this.user.value = user;
+    }
+
+    protected storeAuth(auth: DiscordAuth) {
+        localStorage.setItem('discord_auth', JSON.stringify(auth));
+    }
+
+    protected storeOauthState(state: string) {
+        localStorage.setItem('discord_oauth_state', state);
+    }
+
+    protected removeUser() {
+        localStorage.removeItem('discord_user');
+        this.user.value = null;
+    }
+
+    protected removeAuth() {
+        localStorage.removeItem('discord_auth');
+    }
+
+    protected removeOauthState() {
+        localStorage.removeItem('discord_oauth_state');
+    }
+
+    public getUser(): DiscordUser | null {
+        const user = localStorage.getItem('discord_user');
+        return user ? JSON.parse(user) : null;
+    }
+
+    public isLoggedIn(): boolean {
+        return this.getUser() !== null;
+    }
+
+    public getAuth(): DiscordAuth | null {
+        const auth = localStorage.getItem('discord_auth');
+        return auth ? JSON.parse(auth) : null;
+    }
+
+    public getOauthState(): string | null {
+        return localStorage.getItem('discord_oauth_state');
     }
 }
