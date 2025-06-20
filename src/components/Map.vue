@@ -4,7 +4,10 @@
       :maxBounds="bounds" :maxZoom="4" @click="handleClick" style="position: absolute">
       <l-image-overlay :url="mapUrl" :bounds="bounds" />
       <!-- Add existing markers from the database -->
-      <Marker v-for="marker in markers" :marker="marker" />
+      <Marker v-for="marker in markers" :marker="marker" @marker:removed="handleMarkerRemoved" />
+      <!-- Add new marker dialog -->
+      <MapActionAdd :active="dialogAddMarkerActive" :position="lastNewMarkerPosition"
+        @update:active="dialogAddMarkerActive = $event" @marker:added="handleMarkerAdded" />
     </l-map>
   </v-container>
 </template>
@@ -18,6 +21,7 @@ import { getMapMarkers } from '../database/queries/map-markers.query';
 import type { MapMarker } from '../../netlify/core/database/queries/map_markers.query';
 import { VContainer } from 'vuetify/lib/components/index.mjs';
 import Marker from './map/Marker.vue';
+import MapActionAdd from './map/MapActionAdd.vue';
 
 // initialize ref & computed
 const zoom = ref<number>(1);
@@ -29,7 +33,8 @@ const center = computed<L.PointExpression>(() => [mapHeight.value / 2, mapWidth.
 const markers = ref<MapMarker[]>([]);
 const mapRef = ref<typeof LMap | null>(null);
 const containerRef = ref<typeof VContainer | null>(null);
-
+const dialogAddMarkerActive = ref<boolean>(false);
+const lastNewMarkerPosition = ref<L.LatLng | null>(null);
 
 async function loadMapDimensions(): Promise<void> {
   return new Promise<void>((resolve) => {
@@ -45,7 +50,8 @@ async function loadMapDimensions(): Promise<void> {
 }
 
 function handleClick(event: L.LeafletMouseEvent) {
-  console.log('[Map] Clicked at', event.latlng);
+  dialogAddMarkerActive.value = true;
+  lastNewMarkerPosition.value = event.latlng;
 }
 
 function updateMapDimensions() {
@@ -63,6 +69,21 @@ function updateMapDimensions() {
   }
 }
 
+function handleMarkerAdded(marker: MapMarker) {
+  console.log('[Map] Marker added', marker);
+  loadMapMarkers();
+}
+
+function handleMarkerRemoved(marker: MapMarker) {
+  console.log('[Map] Marker removed', marker);
+  loadMapMarkers();
+}
+
+async function loadMapMarkers() {
+  markers.value = await getMapMarkers() as MapMarker[];
+  console.log('[Map] Map markers loaded', markers.value);
+}
+
 onMounted(async () => {
   await nextTick();
   updateMapDimensions();
@@ -72,8 +93,7 @@ onMounted(async () => {
   await loadMapDimensions();
 
   // load map markers
-  markers.value = await getMapMarkers() as MapMarker[];
-  console.log('[Map] Map markers loaded', markers.value);
+  await loadMapMarkers();
 
   loading.value = false;
 });

@@ -30,7 +30,7 @@ export async function mapMarkersQuery(event: HandlerEvent) {
                 if (data.marker === undefined) {
                     throw new Error('Marker is required');
                 }
-                return await deleteMapMarker(data.id as number);
+                return await deleteMapMarker(data.marker.id as number);
             default:
                 throw new Error(`Unknown action: ${action}`);
         }

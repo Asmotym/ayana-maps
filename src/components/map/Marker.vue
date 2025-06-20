@@ -5,7 +5,7 @@
             <div class="map-marker__popup-content">
                 <h3 class="map-marker__popup-content-title">{{ marker.label }}</h3>
                 <p class="map-marker__popup-content-description">{{ marker.description || 'No description' }}</p>
-                <MarkerActions :marker="marker" />
+                <MarkerActions :marker="marker" @marker:removed="handleMarkerRemoved" />
             </div>
         </l-popup>
     </l-marker>
@@ -22,5 +22,11 @@ const props = defineProps<{
 }>();
 
 const marker = computed<MapMarker>(() => props.marker);
+const emit = defineEmits<{
+    'marker:removed': [marker: MapMarker];
+}>();
 
+function handleMarkerRemoved(marker: MapMarker) {
+    emit('marker:removed', marker);
+}
 </script>

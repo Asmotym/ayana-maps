@@ -13,7 +13,7 @@
                     <v-tooltip text="Close">
                         <template v-slot:activator="{ props }">
                             <v-btn v-bind="props" icon="mdi-close" @click="isActive.value = false" density="comfortable"
-                                variant="tonal" color="red" size="small" />
+                                variant="tonal" size="small" />
                         </template>
                     </v-tooltip>
                 </v-card-title>
