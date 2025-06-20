@@ -7,7 +7,7 @@
       <Marker v-for="marker in markers" :marker="marker" @marker:removed="handleMarkerRemoved" />
       <!-- Add new marker dialog -->
       <MapActionAdd :active="dialogAddMarkerActive" :position="lastNewMarkerPosition"
-        @update:active="dialogAddMarkerActive = $event" @marker:added="handleMarkerAdded" />
+        @update:active="dialogAddMarkerActive = $event" @marker:added="handleMarkerAdded" @marker:updated="handleMarkerUpdated" />
     </l-map>
   </v-container>
 </template>
@@ -76,6 +76,11 @@ function handleMarkerAdded(marker: MapMarker) {
 
 function handleMarkerRemoved(marker: MapMarker) {
   console.log('[Map] Marker removed', marker);
+  loadMapMarkers();
+}
+
+function handleMarkerUpdated(marker: MapMarker) {
+  console.log('[Map] Marker updated', marker);
   loadMapMarkers();
 }
 

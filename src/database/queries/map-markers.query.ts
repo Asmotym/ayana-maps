@@ -12,3 +12,7 @@ export async function insertMapMarker(marker: MapMarker): Promise<Record<string,
 export async function deleteMapMarker(marker: MapMarker): Promise<Record<string, any>> {
     return await DatabaseClient.request('map_markers', { action: 'delete', marker });
 }
+
+export async function updateMapMarker(marker: MapMarker): Promise<Record<string, any>> {
+    return await DatabaseClient.request('map_markers', { action: 'update', marker });
+}
