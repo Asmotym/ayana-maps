@@ -1,5 +1,5 @@
-import { HandlerEvent } from "@netlify/functions";
-import { DiscordUser } from "../../discord/client";
+import type { HandlerEvent } from "@netlify/functions";
+import type { DiscordUser } from "../../discord/client";
 import { sql } from "..";
 
 export type AuthorizedUser = {

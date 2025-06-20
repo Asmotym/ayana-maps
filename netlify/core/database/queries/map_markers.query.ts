@@ -1,4 +1,4 @@
-import { HandlerEvent } from "@netlify/functions";
+import type { HandlerEvent } from "@netlify/functions";
 import { sql } from "..";
 
 export type MapMarker = {
