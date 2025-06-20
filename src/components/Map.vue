@@ -32,7 +32,7 @@ const mapWidth = ref<number>(0);
 const mapHeight = ref<number>(0);
 const loading = ref<boolean>(true);
 const bounds = computed<L.LatLngBoundsLiteral>(() => [[0, 0], [mapHeight.value, mapWidth.value]]);
-const markerCenter = computed<L.LatLngExpression>(() => [mapHeight.value / 2, mapWidth.value / 2]);
+// const markerCenter = computed<L.LatLngExpression>(() => [mapHeight.value / 2, mapWidth.value / 2]);
 const center = computed<L.PointExpression>(() => [mapHeight.value / 2, mapWidth.value / 2]);
 const markers = ref<MapMarker[]>([]);
 

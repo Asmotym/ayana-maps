@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import HelloWorld from './HelloWorld.vue'
-import DiscordAuth from './DiscordAuth.vue'
 import { getDatabaseVersion, getTables } from '../database/database'
 import { getUsersRights, updateUsersRights } from '../database/queries/users-rights.query'
 import { getMapMarkers } from '../database/queries/map-markers.query'
