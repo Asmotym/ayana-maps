@@ -6,6 +6,7 @@ import { getDatabaseVersion, getTables } from '../database/database'
 import { getUsersRights, updateUsersRights } from '../database/queries/users-rights.query'
 import { getMapMarkers } from '../database/queries/map-markers.query'
 import type { DiscordUser } from '../../netlify/core/discord/client'
+import Header from './Header.vue'
 
 // Reactive data for database results
 const dbData = ref<any>(null)
@@ -38,63 +39,49 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="home">
-        <header class="header">
-            <h1>Ayana Maps</h1>
-            <DiscordAuth />
-        </header>
+  <v-main>
+    <Header />
 
-        <main class="main-content">
-            <!-- Database Status Section -->
-            <div class="db-status">
-                <!-- Query Controls -->
-                <div class="query-controls">
-                    <h3>Database Queries</h3>
-                    <div class="query-buttons">
-                        <button @click="performQuery('version')" class="query-btn">
-                            Get Version
-                        </button>
-                        <button @click="performQuery('tables')" class="query-btn">
-                            List Tables
-                        </button>
-                    </div>
-                    <h3>Users Rights Queries</h3>
-                    <div class="query-buttons">
-                        <button @click="performQuery('users_rights')" class="query-btn">
-                            Get Users Rights
-                        </button>
-                        <button
-                            @click="performQuery('update_users_rights', { id: '1234567890', username: 'test', avatar: 'test' } as DiscordUser)"
-                            class="query-btn">
-                            Update Users Rights
-                        </button>
-                    </div>
-                    <h3>Map Markers Queries</h3>
-                    <div class="query-buttons">
-                        <button @click="performQuery('map_markers')" class="query-btn">
-                            Get Map Markers
-                        </button>
-                    </div>
-                </div>
+    <!-- Database Status Section -->
+    <div class="db-status">
+      <!-- Query Controls -->
+      <div class="query-controls">
+        <h3>Database Queries</h3>
+        <div class="query-buttons">
+          <button @click="performQuery('version')" class="query-btn">
+            Get Version
+          </button>
+          <button @click="performQuery('tables')" class="query-btn">
+            List Tables
+          </button>
+        </div>
+        <h3>Users Rights Queries</h3>
+        <div class="query-buttons">
+          <button @click="performQuery('users_rights')" class="query-btn">
+            Get Users Rights
+          </button>
+          <button
+            @click="performQuery('update_users_rights', { id: '1234567890', username: 'test', avatar: 'test' } as DiscordUser)"
+            class="query-btn">
+            Update Users Rights
+          </button>
+        </div>
+        <h3>Map Markers Queries</h3>
+        <div class="query-buttons">
+          <button @click="performQuery('map_markers')" class="query-btn">
+            Get Map Markers
+          </button>
+        </div>
+      </div>
 
-                <!-- Results Display -->
-                <div v-if="dbData" class="results">
-                    <h3>Query Results</h3>
-                    <pre class="results-display">{{ JSON.stringify(dbData, null, 2) }}</pre>
-                </div>
-            </div>
-
-            <div>
-                <a href="https://vite.dev" target="_blank">
-                    <img src="/vite.svg" class="logo" alt="Vite logo" />
-                </a>
-                <a href="https://vuejs.org/" target="_blank">
-                    <img src="../assets/vue.svg" class="logo vue" alt="Vue logo" />
-                </a>
-            </div>
-            <HelloWorld msg="Vite + Vue" />
-        </main>
+      <!-- Results Display -->
+      <div v-if="dbData" class="results">
+        <h3>Query Results</h3>
+        <pre class="results-display">{{ JSON.stringify(dbData, null, 2) }}</pre>
+      </div>
     </div>
+    <HelloWorld msg="Vite + Vue" />
+  </v-main>
 </template>
 
 <style scoped>
@@ -270,7 +257,7 @@ onMounted(() => {
 
 .results-display {
   background: #f8f9fa;
-  color:rgba(0, 0, 0, 1);
+  color: rgba(0, 0, 0, 1);
   padding: 1rem;
   border-radius: 4px;
   font-family: 'Courier New', monospace;
@@ -288,9 +275,11 @@ onMounted(() => {
   will-change: filter;
   transition: filter 300ms;
 }
+
 .logo:hover {
   filter: drop-shadow(0 0 2em #646cffaa);
 }
+
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
 }

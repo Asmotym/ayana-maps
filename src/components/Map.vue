@@ -22,7 +22,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { LMap, LImageOverlay, LMarker, LTooltip, LPopup } from '@vue-leaflet/vue-leaflet';
 import * as L from 'leaflet';
-import mapUrl from '../assets/map.png';
+import mapUrl from '../assets/map.jpg';
 import { getMapMarkers } from '../database/queries/map-markers.query';
 import type { MapMarker } from '../../netlify/core/database/queries/map_markers.query';
 

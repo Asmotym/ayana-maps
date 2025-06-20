@@ -1,13 +1,7 @@
 <template>
-  <div class="app">
-    <router-view />
-  </div>
+  <v-responsive>
+    <v-app>
+      <router-view />
+    </v-app>
+  </v-responsive>
 </template>
-
-<style scoped>
-.app {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-</style>
