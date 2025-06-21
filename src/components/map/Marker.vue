@@ -1,13 +1,30 @@
 <template>
     <l-marker :lat-lng="[marker.x, marker.y]" class="map-marker">
         <l-tooltip class="map-marker__tooltip">{{ marker.label }}</l-tooltip>
-        <l-popup class="map-marker__popup">
-            <div class="map-marker__popup-content">
-                <h3 class="map-marker__popup-content-title">{{ marker.label }}</h3>
-                <p class="map-marker__popup-content-description">{{ marker.description || 'No description' }}</p>
-                <MarkerActions :marker="marker" :user-authorized="userAuthorized" @marker:removed="handleMarkerRemoved"
-                    @marker:updated="handleMarkerUpdated" />
-            </div>
+        <l-popup ref="popupRef" class="map-marker__popup">
+            <v-card class="">
+                <template #title>
+                    <v-container class="d-flex justify-space-between align-center pa-0">
+                        <span class="">{{ marker.label }}</span>
+                        
+                        <v-tooltip text="Close">
+                        <template v-slot:activator="{ props }">
+                            <v-btn v-bind="props" icon="mdi-close" variant="text" size="small" color="primary" @click="closePopup" />
+                        </template>
+                    </v-tooltip>
+                    </v-container>
+                </template>
+                <template #subtitle>
+                    <v-container class="d-flex justify-space-between align-center pa-0">
+                        <span class="text-caption">{{ marker.category_name || 'No category' }}</span>
+                    </v-container>
+                </template>
+                <template #text>{{ marker.description || 'No description' }}</template>
+                <template #actions>
+                    <MarkerActions :marker="marker" :user-authorized="userAuthorized" @marker:removed="handleMarkerRemoved"
+                        @marker:updated="handleMarkerUpdated" />
+                </template>
+            </v-card>
         </l-popup>
     </l-marker>
 </template>
@@ -15,8 +32,11 @@
 <script setup lang="ts">
 import { LMarker, LTooltip, LPopup } from '@vue-leaflet/vue-leaflet';
 import type { MapMarker } from '../../../netlify/core/database/types';
-import { computed, defineProps } from 'vue';
+import { computed, defineProps, ref } from 'vue';
 import MarkerActions from './marker/MarkerActions.vue';
+import { useLogger } from 'vue-logger-plugin';
+
+const logger = useLogger();
 
 const props = defineProps<{
     marker: MapMarker;
@@ -24,6 +44,7 @@ const props = defineProps<{
 }>();
 
 const marker = computed<MapMarker>(() => props.marker);
+const popupRef = ref<typeof LPopup | null>(null);
 const emit = defineEmits<{
     'marker:removed': [marker: MapMarker];
     'marker:updated': [marker: MapMarker];
@@ -36,4 +57,28 @@ function handleMarkerRemoved(marker: MapMarker) {
 function handleMarkerUpdated(marker: MapMarker) {
     emit('marker:updated', marker);
 }
+
+function closePopup() {
+    logger.info('Closing popup');
+    popupRef.value?.leafletObject.close();
+}
 </script>
+
+<style>
+.leaflet-popup-close-button {
+    display: none !important;
+}
+
+.leaflet-popup-content-wrapper {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.leaflet-popup-tip-container .leaflet-popup-tip {
+    background: rgb(var(--v-theme-surface)) !important;
+}
+
+.leaflet-popup-content {
+    margin: 0 !important;
+}
+</style>

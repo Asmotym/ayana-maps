@@ -8,6 +8,7 @@ import router from './router'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
+import logger from './plugins/logger.plugin'
 
 const vuetify = createVuetify({
     components,
@@ -23,4 +24,7 @@ const vuetify = createVuetify({
 const app = createApp(App)
 app.use(router)
 app.use(vuetify)
+app.use(logger)
 app.mount('#app')
+
+logger.info('Application started')

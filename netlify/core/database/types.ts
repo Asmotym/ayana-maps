@@ -16,6 +16,8 @@ export type MapMarker = {
     y: number;
     label?: string | null;
     description?: string | null;
+    category_id?: number;
+    category_name?: string;
     created_at?: Date;
 } 
 

@@ -1,5 +1,6 @@
 <template>
   <v-container ref="containerRef" class="image-map pa-0" fluid>
+    <v-skeleton-loader v-if="loading" type="image" full-height />
     <l-map :class="'l-map'" ref="mapRef" v-if="!loading" :zoom="zoom" :center="center" :crs="L.CRS.Simple"
       :maxBounds="bounds" :maxZoom="4" @click="handleClick" style="position: absolute">
       <l-image-overlay :url="mapUrl" :bounds="bounds" />
@@ -24,6 +25,7 @@ import Marker from './map/Marker.vue';
 import MapActionAdd from './map/MapActionAdd.vue';
 import { DiscordService } from '../services/discord.service';
 import { isUserAuthorized } from '../database/queries/users.query';
+import { useLogger } from 'vue-logger-plugin';
 
 // initialize ref & computed
 const zoom = ref<number>(1);
@@ -38,6 +40,7 @@ const containerRef = ref<typeof VContainer | null>(null);
 const dialogAddMarkerActive = ref<boolean>(false);
 const lastNewMarkerPosition = ref<L.LatLng | null>(null);
 const userAuthorized = ref<boolean>(false);
+const logger = useLogger();
 
 async function loadMapDimensions(): Promise<void> {
   return new Promise<void>((resolve) => {
@@ -46,7 +49,7 @@ async function loadMapDimensions(): Promise<void> {
     img.onload = () => {
       mapWidth.value = img.naturalWidth;
       mapHeight.value = img.naturalHeight;
-      console.log('[Map] Map dimensions loaded', mapWidth.value, mapHeight.value);
+      logger.info('Map dimensions loaded', mapWidth.value, mapHeight.value);
       resolve();
     }
   });
@@ -73,23 +76,23 @@ function updateMapDimensions() {
 }
 
 function handleMarkerAdded(marker: MapMarker) {
-  console.log('[Map] Marker added', marker);
+  logger.info('Marker added', marker);
   loadMapMarkers();
 }
 
 function handleMarkerRemoved(marker: MapMarker) {
-  console.log('[Map] Marker removed', marker);
+  logger.info('Marker removed', marker);
   loadMapMarkers();
 }
 
 function handleMarkerUpdated(marker: MapMarker) {
-  console.log('[Map] Marker updated', marker);
+  logger.info('Marker updated', marker);
   loadMapMarkers();
 }
 
 async function loadMapMarkers() {
   markers.value = await getMapMarkers() as MapMarker[];
-  console.log('[Map] Map markers loaded', markers.value);
+  logger.info('Map markers loaded', markers.value);
 }
 
 async function loadUserAuthorization() {
@@ -122,3 +125,17 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', updateMapDimensions);
 });
 </script>
+
+<style>
+.v-skeleton-loader {
+  position: absolute !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.v-skeleton-loader > .v-skeleton-loader__bone.v-skeleton-loader__image {
+  position: absolute !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+</style>
