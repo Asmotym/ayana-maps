@@ -1,5 +1,6 @@
 import { HandlerEvent, HandlerResponse } from "@netlify/functions";
 import { DiscordAuth, DiscordClient } from "./client";
+import { getUser, insertUser, updateUser } from "../database/queries/users.query";
 
 export class DiscordHandler {
     private event: HandlerEvent;
@@ -60,7 +61,21 @@ export class DiscordHandler {
     protected async getQueryResult() {
         switch (this.body.queryType) {
             case 'user':
-                return await this.discordClient.getUserInfo(this.body);
+                const discordUser = await this.discordClient.getUserInfo(this.body);
+                const existingUser = await getUser(discordUser.id);
+                if (existingUser === undefined) {
+                    await insertUser({
+                        discord_user_id: discordUser.id,
+                        username: discordUser.username,
+                        avatar: discordUser.avatar,
+                    });
+                } else {
+                    await updateUser(discordUser.id, {
+                        username: discordUser.username,
+                        avatar: discordUser.avatar,
+                    });
+                }
+                return discordUser;
         }
     }
 

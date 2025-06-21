@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import type { MapMarker } from '../../../../../netlify/core/database/queries/map_markers.query';
+import type { MapMarker } from '../../../../../netlify/core/database/types';
 import { computed, defineProps, ref } from 'vue';
 import { updateMapMarker } from '../../../../database/queries/map-markers.query';
 

@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import { computed, defineProps, defineEmits, ref } from 'vue';
 import type * as L from 'leaflet';
-import type { MapMarker } from '../../../netlify/core/database/queries/map_markers.query';
+import type { MapMarker } from '../../../netlify/core/database/types';
 import { insertMapMarker } from '../../database/queries/map-markers.query';
 
 const props = defineProps<{

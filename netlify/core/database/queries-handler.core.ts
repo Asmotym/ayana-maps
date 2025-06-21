@@ -1,7 +1,7 @@
 import type { HandlerEvent, HandlerResponse } from "@netlify/functions";
 import { tablesQuery } from "./queries/tables.query";
 import { versionQuery } from "./queries/version.query";
-import { usersRightsQuery } from "./queries/users-rights.query";
+import { usersQuery } from "./queries/users.query";
 import { mapMarkersQuery } from "./queries/map_markers.query";
 
 export class QueryHandler {
@@ -44,8 +44,8 @@ export class QueryHandler {
                 return await versionQuery();
             case 'tables':
                 return await tablesQuery();
-            case 'users_rights':
-                return await usersRightsQuery(this.event);
+            case 'users':
+                return await usersQuery(this.event);
             case 'map_markers':
                 return await mapMarkersQuery(this.event);
             default:

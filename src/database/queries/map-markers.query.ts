@@ -1,4 +1,4 @@
-import type { MapMarker } from "../../../netlify/core/database/queries/map_markers.query";
+import type { MapMarker } from "../../../netlify/core/database/types";
 import { DatabaseClient } from "../client";
 
 export async function getMapMarkers(): Promise<Record<string, any>> {

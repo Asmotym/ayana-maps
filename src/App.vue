@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import Header from './components/Header.vue';
 import { DiscordService } from './services/discord.service';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import type { DiscordUser } from '../netlify/core/discord/client';
 
 const discordService = DiscordService.getInstance();

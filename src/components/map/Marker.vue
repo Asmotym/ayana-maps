@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 import { LMarker, LTooltip, LPopup } from '@vue-leaflet/vue-leaflet';
-import type { MapMarker } from '../../../netlify/core/database/queries/map_markers.query';
+import type { MapMarker } from '../../../netlify/core/database/types';
 import { computed, defineProps } from 'vue';
 import MarkerActions from './marker/MarkerActions.vue';
 

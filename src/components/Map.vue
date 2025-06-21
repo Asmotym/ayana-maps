@@ -18,10 +18,12 @@ import { LMap, LImageOverlay } from '@vue-leaflet/vue-leaflet';
 import * as L from 'leaflet';
 import mapUrl from '../assets/map.jpg';
 import { getMapMarkers } from '../database/queries/map-markers.query';
-import type { MapMarker } from '../../netlify/core/database/queries/map_markers.query';
+import type { MapMarker } from '../../netlify/core/database/types';
 import { VContainer } from 'vuetify/lib/components/index.mjs';
 import Marker from './map/Marker.vue';
 import MapActionAdd from './map/MapActionAdd.vue';
+// import { getAuthorizedUser } from '../database/queries/authorized-users.query';
+import { DiscordService } from '../services/discord.service';
 
 // initialize ref & computed
 const zoom = ref<number>(1);
@@ -35,6 +37,7 @@ const mapRef = ref<typeof LMap | null>(null);
 const containerRef = ref<typeof VContainer | null>(null);
 const dialogAddMarkerActive = ref<boolean>(false);
 const lastNewMarkerPosition = ref<L.LatLng | null>(null);
+const isUserAuthorized = ref<boolean>(false);
 
 async function loadMapDimensions(): Promise<void> {
   return new Promise<void>((resolve) => {
@@ -89,6 +92,16 @@ async function loadMapMarkers() {
   console.log('[Map] Map markers loaded', markers.value);
 }
 
+async function loadUserAuthorization() {
+  const currentUser = DiscordService.getInstance().getUser();
+  if (currentUser === null) {
+    isUserAuthorized.value = false;
+    return;
+  }
+  // const user = await getAuthorizedUser(currentUser.id);
+  // isUserAuthorized.value = user !== undefined;
+}
+
 onMounted(async () => {
   await nextTick();
   updateMapDimensions();
@@ -100,6 +113,9 @@ onMounted(async () => {
   // load map markers
   await loadMapMarkers();
 
+  // load user authorization
+  await loadUserAuthorization();
+
   loading.value = false;
 });
 
@@ -107,7 +123,3 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', updateMapDimensions);
 });
 </script>
-
-<style scoped>
-.leaflet-popup {}
-</style>

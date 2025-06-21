@@ -1,14 +1,6 @@
 import type { HandlerEvent } from "@netlify/functions";
+import type { MapMarker } from "../types";
 import { sql } from "..";
-
-export type MapMarker = {
-    id?: number;
-    x: number;
-    y: number;
-    label?: string | null;
-    description?: string | null;
-    created_at?: Date;
-}
 
 export async function mapMarkersQuery(event: HandlerEvent) {
     const body = JSON.parse(event.body || '{}');

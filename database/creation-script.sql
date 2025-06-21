@@ -1,11 +1,8 @@
-CREATE TABLE users_rights (
+CREATE TABLE users (
   discord_user_id VARCHAR(255) PRIMARY KEY,
+  username VARCHAR(255) NOT NULL,
+  avatar VARCHAR(255) NOT NULL,
   rights_update BOOLEAN DEFAULT FALSE
-);
-
-CREATE TABLE authorized_users (
-  discord_user_id VARCHAR(255) PRIMARY KEY,
-  username VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE map_markers (
