@@ -1,3 +1,7 @@
+import { createLogger } from "../utils/logger";
+
+const logger = createLogger('DiscordClient');
+
 export type DiscordAuth = {
     tokenType: string;
     accessToken: string;
@@ -6,7 +10,7 @@ export type DiscordAuth = {
     state: string;
 }
 
-export type DiscordUser = {
+export interface DiscordUser {
     id: string;
     username: string;
     avatar: string;
@@ -16,7 +20,7 @@ export class DiscordClient {
     protected baseUrl: string = "https://discord.com/api/v10";
 
     public async getUserInfo(auth: DiscordAuth): Promise<DiscordUser> {
-        console.info('[DiscordClient] Getting user info', { auth });
+        logger.info('Fetching user info from Discord API');
         const userResponse = await fetch(`${this.baseUrl}/users/@me`, {
             headers: {
                 Authorization: `${auth.tokenType} ${auth.accessToken}`,
@@ -24,7 +28,8 @@ export class DiscordClient {
         });
 
         if (!userResponse.ok) {
-            console.error('Discord user info fetch failed:', await userResponse.text())
+            const errorText = await userResponse.text();
+            logger.error(`Discord API request failed: ${logger.errorValue(userResponse.status.toString())} - ${errorText}`);
             throw new Error('Failed to get user info');
         }
 
@@ -35,6 +40,7 @@ export class DiscordClient {
             avatar: `https://cdn.discordapp.com/avatars/${json.id}/${json.avatar}.png?size=512`,
         };
 
+        logger.success(`Successfully retrieved user: ${logger.highlight(user.username)}`);
         return user;
     }
 }

@@ -1,6 +1,9 @@
 import { HandlerEvent, HandlerResponse } from "@netlify/functions";
 import { DiscordAuth, DiscordClient } from "./client";
 import { getUser, insertUser, updateUser } from "../database/queries/users.query";
+import { createLogger } from "../utils/logger";
+
+const logger = createLogger('DiscordHandler');
 
 export class DiscordHandler {
     private event: HandlerEvent;
@@ -39,17 +42,20 @@ export class DiscordHandler {
                 this.body.queryType = this.body.queryType || 'user';
             }
 
+            logger.info(`Processing ${logger.highlight(this.body.queryType)} query`);
+            const result = await this.getQueryResult();
+
             return {
                 statusCode: 200,
                 headers: this.headers,
                 body: JSON.stringify({
                     success: true,
-                    data: await this.getQueryResult(),
+                    data: result,
                     queryType: this.body.queryType
                 })
             };
         } catch (error) {
-            console.error(`[DiscordHandler] ${error}`);
+            logger.error(`Request failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
             return {
                 statusCode: 400,
                 headers: this.headers,
@@ -61,25 +67,33 @@ export class DiscordHandler {
     protected async getQueryResult() {
         switch (this.body.queryType) {
             case 'user':
+                logger.info('Fetching Discord user info');
                 const discordUser = await this.discordClient.getUserInfo(this.body);
+                logger.success(`Retrieved Discord user: ${logger.highlight(discordUser.username)} (${logger.highlight(discordUser.id)})`);
+                
                 const existingUser = await getUser(discordUser.id);
                 if (existingUser === undefined) {
+                    logger.info('User not found in database, creating new user');
                     await insertUser({
                         discord_user_id: discordUser.id,
                         username: discordUser.username,
                         avatar: discordUser.avatar,
                     });
                 } else {
+                    logger.info('User found in database, updating user info');
                     await updateUser(discordUser.id, {
                         username: discordUser.username,
                         avatar: discordUser.avatar,
                     });
                 }
                 return discordUser;
+            default:
+                throw new Error(`Unknown query type: ${this.body.queryType}`);
         }
     }
 
     protected returnOptionsResponse(): HandlerResponse {
+        logger.debug('Handling OPTIONS request');
         return {
             statusCode: 200,
             headers: this.headers,
@@ -88,6 +102,7 @@ export class DiscordHandler {
     }
 
     protected returnMethodNotAllowedResponse(): HandlerResponse {
+        logger.warn(`Method not allowed: ${logger.highlight(this.event.httpMethod)}`);
         return {
             statusCode: 405,
             headers: this.headers,
