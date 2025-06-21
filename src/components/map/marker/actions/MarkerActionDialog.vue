@@ -14,12 +14,12 @@
                     <v-tooltip text="Close">
                         <template v-slot:activator="{ props }">
                             <v-container class="d-flex flex-row justify-end pa-0">
-                                <v-btn v-if="!isEditing && userAuthorized" class="mr-1" icon="mdi-pencil" @click="handleEdit" density="comfortable" variant="tonal"
-                                    size="small" />
-                                <v-btn v-else-if="userAuthorized" class="mr-1" icon="mdi-check" @click="handleEdit" density="comfortable" variant="tonal"
-                                size="small" />
-                                <v-btn v-bind="props" icon="mdi-close" @click="isActive.value = false" density="comfortable"
-                                    variant="tonal" size="small" />
+                                <v-btn v-if="!isEditing && userAuthorized" class="mr-1" icon="mdi-pencil"
+                                    @click="handleEdit" density="comfortable" variant="tonal" size="small" />
+                                <v-btn v-else-if="userAuthorized" class="mr-1" icon="mdi-check" @click="handleEdit"
+                                    density="comfortable" variant="tonal" size="small" />
+                                <v-btn v-bind="props" icon="mdi-close" @click="isActive.value = false"
+                                    density="comfortable" variant="tonal" size="small" />
                             </v-container>
                         </template>
                     </v-tooltip>
@@ -27,8 +27,19 @@
 
                 <v-card-text>
                     <div v-if="!isEditing">{{ marker.description }}</div>
-                    <v-textarea v-else v-model="marker.description" density="compact" label="Description" width="100%" />
+                    <v-textarea v-else v-model="marker.description" density="compact" label="Description"
+                        width="100%" />
                 </v-card-text>
+
+                <v-card-actions>
+                    <v-tooltip :text="'Created ' + marker.created_at">
+                        <template v-slot:activator="{ props }">
+                            <v-chip prepend-icon="mdi-calendar" variant="outlined" v-bind="props">
+                                {{ formatHumanDate(marker.created_at) }}
+                            </v-chip>
+                        </template>
+                    </v-tooltip>
+                </v-card-actions>
             </v-card>
         </template>
     </v-dialog>
@@ -38,6 +49,7 @@
 import type { MapMarker } from '../../../../../netlify/core/database/types';
 import { computed, defineProps, ref } from 'vue';
 import { updateMapMarker } from '../../../../database/queries/map-markers.query';
+import { formatHumanDate } from '../../../../utils/date';
 
 const props = defineProps<{
     marker: MapMarker;
