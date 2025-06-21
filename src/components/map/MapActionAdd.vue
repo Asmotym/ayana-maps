@@ -84,5 +84,11 @@ async function handleSubmit() {
     await insertMapMarker(marker);
     dialogActive.value = false;
     emit('marker:added', marker);
+
+    // reset form
+    label.value = '';
+    description.value = '';
+    valid.value = false;
+
 }
 </script>
