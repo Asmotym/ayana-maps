@@ -1,4 +1,4 @@
-import { createLogger, type LogEvent, type LogLevel, type LoggerHook, type LoggerOptions, type VueLogger } from 'vue-logger-plugin';
+import { createLogger, type LogLevel, type LoggerOptions, type VueLogger } from 'vue-logger-plugin';
 
 const logger = createLogger({
     enabled: import.meta.env.VITE_LOG_ENABLED === 'true' || true,
