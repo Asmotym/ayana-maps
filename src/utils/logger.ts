@@ -57,10 +57,8 @@ export class ClientLogger {
     }
 
     debug(message: string, ...args: any[]): void {
-        if (import.meta.env.DEV) {
-            const formattedMessage = this.formatMessage('DEBUG', message, 'blue');
-            console.debug(formattedMessage, ...this.getStyleArgs('blue'), ...args);
-        }
+        const formattedMessage = this.formatMessage('DEBUG', message, 'blue');
+        console.debug(formattedMessage, ...this.getStyleArgs('blue'), ...args);
     }
 
     success(message: string, ...args: any[]): void {

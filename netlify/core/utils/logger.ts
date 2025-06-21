@@ -45,10 +45,8 @@ export class Logger {
     }
 
     debug(message: string, ...args: any[]): void {
-        if (process.env.NODE_ENV === 'development') {
-            const formattedMessage = this.formatMessage('DEBUG', message, colors.blue);
-            console.debug(formattedMessage, ...args);
-        }
+        const formattedMessage = this.formatMessage('DEBUG', message, colors.blue);
+        console.debug(formattedMessage, ...args);
     }
 
     success(message: string, ...args: any[]): void {
