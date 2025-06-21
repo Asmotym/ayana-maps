@@ -26,6 +26,13 @@
                     :disabled="loadingQuery === 'map_markers'" />
             </div>
 
+            <h3 class="mt-4">Marker Categories Queries</h3>
+            <div class="queries-testing__content__buttons mt-2">
+                <v-btn class="me-2" text="Get Marker Categories" @click="performQuery('marker_categories')" variant="outlined"
+                    color="primary" :loading="loadingQuery === 'marker_categories'"
+                    :disabled="loadingQuery === 'marker_categories'" />
+            </div>
+
             <!-- Results Display -->
             <div v-if="dbData" class="queries-testing__results mt-4">
                 <h3 class="queries-testing__results__title">Query Results</h3>
@@ -41,6 +48,7 @@ import { getDatabaseVersion, getTables } from '../../database/database'
 import { getMapMarkers } from '../../database/queries/map-markers.query'
 import { DiscordService } from '../../services/discord.service'
 import { getUser } from '../../database/queries/users.query'
+import { getMarkerCategories } from '../../database/queries/marker-categories.query'
 
 // Reactive data for database results
 const dbData = ref<any>(null)
@@ -61,6 +69,9 @@ async function performQuery(queryType: string) {
             break
         case 'map_markers':
             dbData.value = await getMapMarkers()
+            break
+        case 'marker_categories':
+            dbData.value = await getMarkerCategories()
             break
     }
     loadingQuery.value = null

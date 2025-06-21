@@ -1,10 +1,15 @@
 import type { HandlerEvent } from "@netlify/functions";
 import type { MapMarker } from "../types";
 import { sql } from "..";
+import { createLogger } from "../../utils/logger";
+
+const logger = createLogger('Map Markers');
 
 export async function mapMarkersQuery(event: HandlerEvent) {
     const body = JSON.parse(event.body || '{}');
     const data = body.data as { action: string, marker?: MapMarker, id?: number } || undefined;
+
+    logger.info(`Querying <action: ${logger.highlight(data?.action || 'undefined')}> <marker: ${logger.highlight(data?.marker?.id?.toString() || 'undefined')}> <id: ${logger.highlight(data?.id?.toString() || 'undefined')}>`);
 
     if (data === undefined) {
         throw new Error('No data provided');
@@ -31,19 +36,23 @@ export async function mapMarkersQuery(event: HandlerEvent) {
 
 export async function insertMapMarker(marker: MapMarker): Promise<MapMarker> {
     const result = await sql`INSERT INTO map_markers (x, y, label, description) VALUES (${marker.x}, ${marker.y}, ${marker.label}, ${marker.description})`;
+    logger.info(`Inserted map marker <marker: ${logger.highlight(marker.id?.toString() || 'unknown')}>`);
     return result[0] as MapMarker;
 }
 
 export async function updateMapMarker(marker: MapMarker): Promise<MapMarker> {
     const result = await sql`UPDATE map_markers SET x = ${marker.x}, y = ${marker.y}, label = ${marker.label}, description = ${marker.description} WHERE id = ${marker.id}`;
+    logger.info(`Updated map marker <marker: ${logger.highlight(marker.id?.toString() || 'unknown')}>`);
     return result[0] as MapMarker;
 }
 
 export async function deleteMapMarker(id: number): Promise<void> {
     await sql`DELETE FROM map_markers WHERE id = ${id}`;
+    logger.info(`Deleted map marker <marker: ${logger.highlight(id.toString())}>`);
 }
 
 export async function getMapMarkers(): Promise<MapMarker[]> {
     const result = await sql`SELECT * FROM map_markers`;
+    logger.info(`Fetched all map markers <count: ${logger.highlight(result.length.toString())}>`);
     return result as MapMarker[];
 }

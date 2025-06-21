@@ -18,3 +18,8 @@ export type MapMarker = {
     description?: string | null;
     created_at?: Date;
 } 
+
+export type MarkerCategory = {
+    id?: number;
+    name: string;
+}

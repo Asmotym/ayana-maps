@@ -3,6 +3,7 @@ import { tablesQuery } from "./tables/tables.table";
 import { versionQuery } from "./tables/version.table";
 import { usersQuery } from "./tables/users.table";
 import { mapMarkersQuery } from "./tables/map_markers.table";
+import { markerCategoriesQuery } from "./tables/marker_categories.table";
 
 export class QueryHandler {
     private event: HandlerEvent;
@@ -48,6 +49,8 @@ export class QueryHandler {
                 return await usersQuery(this.event);
             case 'map_markers':
                 return await mapMarkersQuery(this.event);
+            case 'marker_categories':
+                return await markerCategoriesQuery(this.event);
             default:
                 throw new Error(`Unknown query type: ${this.queryType}`);
         }
