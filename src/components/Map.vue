@@ -4,9 +4,9 @@
       :maxBounds="bounds" :maxZoom="4" @click="handleClick" style="position: absolute">
       <l-image-overlay :url="mapUrl" :bounds="bounds" />
       <!-- Add existing markers from the database -->
-      <Marker v-for="marker in markers" :marker="marker" @marker:removed="handleMarkerRemoved" />
+      <Marker v-for="marker in markers" :marker="marker" :user-authorized="userAuthorized" @marker:removed="handleMarkerRemoved" />
       <!-- Add new marker dialog -->
-      <MapActionAdd :active="dialogAddMarkerActive" :position="lastNewMarkerPosition"
+      <MapActionAdd :active="dialogAddMarkerActive" :position="lastNewMarkerPosition" :user-authorized="userAuthorized"
         @update:active="dialogAddMarkerActive = $event" @marker:added="handleMarkerAdded" @marker:updated="handleMarkerUpdated" />
     </l-map>
   </v-container>
@@ -18,12 +18,12 @@ import { LMap, LImageOverlay } from '@vue-leaflet/vue-leaflet';
 import * as L from 'leaflet';
 import mapUrl from '../assets/map.jpg';
 import { getMapMarkers } from '../database/queries/map-markers.query';
-import type { MapMarker } from '../../netlify/core/database/types';
+import { type MapMarker, UserRights } from '../../netlify/core/database/types';
 import { VContainer } from 'vuetify/lib/components/index.mjs';
 import Marker from './map/Marker.vue';
 import MapActionAdd from './map/MapActionAdd.vue';
-// import { getAuthorizedUser } from '../database/queries/authorized-users.query';
 import { DiscordService } from '../services/discord.service';
+import { isUserAuthorized } from '../database/queries/users.query';
 
 // initialize ref & computed
 const zoom = ref<number>(1);
@@ -37,7 +37,7 @@ const mapRef = ref<typeof LMap | null>(null);
 const containerRef = ref<typeof VContainer | null>(null);
 const dialogAddMarkerActive = ref<boolean>(false);
 const lastNewMarkerPosition = ref<L.LatLng | null>(null);
-const isUserAuthorized = ref<boolean>(false);
+const userAuthorized = ref<boolean>(false);
 
 async function loadMapDimensions(): Promise<void> {
   return new Promise<void>((resolve) => {
@@ -95,11 +95,10 @@ async function loadMapMarkers() {
 async function loadUserAuthorization() {
   const currentUser = DiscordService.getInstance().getUser();
   if (currentUser === null) {
-    isUserAuthorized.value = false;
+    userAuthorized.value = false;
     return;
   }
-  // const user = await getAuthorizedUser(currentUser.id);
-  // isUserAuthorized.value = user !== undefined;
+  userAuthorized.value = await isUserAuthorized(currentUser.id, UserRights.UPDATE);
 }
 
 onMounted(async () => {

@@ -1,5 +1,5 @@
 <template>
-    <v-dialog width="500" v-model="dialogActive">
+    <v-dialog width="500" v-model="dialogActive" v-if="userAuthorized">
         <v-card>
             <v-card-title class="d-flex flex-row justify-space-between align-center">
                 <span>Add new marker</span>
@@ -34,6 +34,7 @@ import { insertMapMarker } from '../../database/queries/map-markers.query';
 const props = defineProps<{
     active: boolean;
     position: L.LatLng | null;
+    userAuthorized: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -41,6 +42,7 @@ const emit = defineEmits<{
     'marker:added': [marker: MapMarker];
 }>();
 
+const userAuthorized = computed<boolean>(() => props.userAuthorized);
 const dialogActive = computed({
     get: () => props.active,
     set: (value: boolean) => emit('update:active', value)

@@ -5,7 +5,8 @@
             <div class="map-marker__popup-content">
                 <h3 class="map-marker__popup-content-title">{{ marker.label }}</h3>
                 <p class="map-marker__popup-content-description">{{ marker.description || 'No description' }}</p>
-                <MarkerActions :marker="marker" @marker:removed="handleMarkerRemoved" @marker:updated="handleMarkerUpdated" />
+                <MarkerActions :marker="marker" :user-authorized="userAuthorized" @marker:removed="handleMarkerRemoved"
+                    @marker:updated="handleMarkerUpdated" />
             </div>
         </l-popup>
     </l-marker>
@@ -19,6 +20,7 @@ import MarkerActions from './marker/MarkerActions.vue';
 
 const props = defineProps<{
     marker: MapMarker;
+    userAuthorized: boolean;
 }>();
 
 const marker = computed<MapMarker>(() => props.marker);

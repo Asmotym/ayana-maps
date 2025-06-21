@@ -1,5 +1,5 @@
 <template>
-    <v-dialog width="500">
+    <v-dialog width="500" v-if="userAuthorized">
         <template v-slot:activator="{ props }">
             <v-btn variant="outlined" color="error" density="comfortable" icon="mdi-trash-can-outline" v-bind="props" />
         </template>
@@ -33,9 +33,11 @@ import { deleteMapMarker } from '../../../../database/queries/map-markers.query'
 
 const props = defineProps<{
     marker: MapMarker;
+    userAuthorized: boolean;
 }>();
 
 const marker = computed<MapMarker>(() => props.marker);
+const userAuthorized = computed<boolean>(() => props.userAuthorized);
 const emit = defineEmits<{
     'marker:removed': [marker: MapMarker];
 }>();

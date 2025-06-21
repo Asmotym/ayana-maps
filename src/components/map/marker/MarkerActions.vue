@@ -1,7 +1,7 @@
 <template>
     <v-container class="d-flex flex-row justify-center align-center pa-0">
-        <MarkerActionDialog :marker="marker" @marker:updated="handleMarkerUpdated" />
-        <MarkerActionRemove :marker="marker" @marker:removed="handleMarkerRemoved" />
+        <MarkerActionDialog :marker="marker" :user-authorized="userAuthorized" @marker:updated="handleMarkerUpdated" />
+        <MarkerActionRemove :marker="marker" :user-authorized="userAuthorized" @marker:removed="handleMarkerRemoved" />
     </v-container>
 </template>
 
@@ -13,6 +13,7 @@ import MarkerActionRemove from './actions/MarkerActionRemove.vue';
 
 const props = defineProps<{
     marker: MapMarker;
+    userAuthorized: boolean;
 }>();
 
 const marker = computed<MapMarker>(() => props.marker);

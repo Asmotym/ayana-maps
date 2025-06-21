@@ -1,6 +1,7 @@
 import type { HandlerEvent } from "@netlify/functions";
 import type { DiscordUser } from "../../discord/client";
-import type { User, UserRights } from "../types";
+import type { User } from "../types";
+import { UserRights } from "../types";
 import { sql } from "..";
 
 export async function getUser(id: string): Promise<User | undefined> {
@@ -19,8 +20,19 @@ export async function insertUser(data: User): Promise<User> {
 }
 
 export async function isUserAuthorized(id: string, right: UserRights): Promise<boolean> {
-    const result = await sql`SELECT ${right} FROM users WHERE discord_user_id = ${id}`;
-    return result[0][right] as boolean || false;
+    let result;
+    
+    switch (right) {
+        case UserRights.UPDATE:
+            result = await sql`SELECT rights_update FROM users WHERE discord_user_id = ${id}`;
+            break;
+        default:
+            console.warn(`[isUserAuthorized] Unknown right: ${right}`);
+            return false;
+    }
+    
+    console.log('[isUserAuthorized] Result', { result: result[0]?.rights_update, right, id });
+    return result[0]?.rights_update as boolean || false;
 }
 
 export async function usersQuery(event: HandlerEvent): Promise<Record<string, any>> {

@@ -14,9 +14,9 @@
                     <v-tooltip text="Close">
                         <template v-slot:activator="{ props }">
                             <v-container class="d-flex flex-row justify-end pa-0">
-                                <v-btn v-if="!isEditing" class="mr-1" icon="mdi-pencil" @click="handleEdit" density="comfortable" variant="tonal"
+                                <v-btn v-if="!isEditing && userAuthorized" class="mr-1" icon="mdi-pencil" @click="handleEdit" density="comfortable" variant="tonal"
                                     size="small" />
-                                <v-btn v-else class="mr-1" icon="mdi-check" @click="handleEdit" density="comfortable" variant="tonal"
+                                <v-btn v-else-if="userAuthorized" class="mr-1" icon="mdi-check" @click="handleEdit" density="comfortable" variant="tonal"
                                 size="small" />
                                 <v-btn v-bind="props" icon="mdi-close" @click="isActive.value = false" density="comfortable"
                                     variant="tonal" size="small" />
@@ -41,15 +41,18 @@ import { updateMapMarker } from '../../../../database/queries/map-markers.query'
 
 const props = defineProps<{
     marker: MapMarker;
+    userAuthorized: boolean;
 }>();
 
 const marker = computed<MapMarker>(() => props.marker);
+const userAuthorized = computed<boolean>(() => props.userAuthorized);
 const isEditing = ref<boolean>(false);
 const emit = defineEmits<{
     'marker:updated': [marker: MapMarker];
 }>();
 
 async function handleEdit() {
+    if (!userAuthorized.value) return;
     console.log('[MarkerActionDialog] Editing marker', marker.value);
     if (isEditing.value) {
         isEditing.value = false;
