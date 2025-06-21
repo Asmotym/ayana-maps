@@ -11,5 +11,11 @@ CREATE TABLE map_markers (
   y DOUBLE PRECISION NOT NULL,
   label VARCHAR(255),
   description TEXT,
+  category_id INTEGER REFERENCES marker_categories(id),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE marker_categories (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL
 );

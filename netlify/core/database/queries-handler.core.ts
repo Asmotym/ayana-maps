@@ -1,8 +1,8 @@
 import type { HandlerEvent, HandlerResponse } from "@netlify/functions";
-import { tablesQuery } from "./queries/tables.query";
-import { versionQuery } from "./queries/version.query";
-import { usersQuery } from "./queries/users.query";
-import { mapMarkersQuery } from "./queries/map_markers.query";
+import { tablesQuery } from "./tables/tables.table";
+import { versionQuery } from "./tables/version.table";
+import { usersQuery } from "./tables/users.table";
+import { mapMarkersQuery } from "./tables/map_markers.table";
 
 export class QueryHandler {
     private event: HandlerEvent;

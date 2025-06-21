@@ -1,6 +1,6 @@
 import { HandlerEvent, HandlerResponse } from "@netlify/functions";
 import { DiscordAuth, DiscordClient } from "./client";
-import { getUser, insertUser, updateUser } from "../database/queries/users.query";
+import { getUser, insertUser, updateUser } from "../database/tables/users.table";
 import { createLogger } from "../utils/logger";
 
 const logger = createLogger('DiscordHandler');
