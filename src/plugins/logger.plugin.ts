@@ -15,13 +15,6 @@ const logger = createLogger({
             ? `${timestamp}${logLevel}${prefix}${callerInfo}`
             : `${timestamp}${logLevel}${prefix}`
     },
-    beforeHooks: [
-        {
-            run: (event) => {
-                console.log('beforeHooks', event)
-            }
-        }
-    ]
 } as LoggerOptions & { prefix: string }) as VueLogger & { _options: LoggerOptions & { prefix: string } };
 
 export default logger;
