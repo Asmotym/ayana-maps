@@ -1,8 +1,8 @@
 <template>
-  <v-container ref="containerRef" class="image-map pa-0" fluid>
+  <v-container ref="containerRef" class="image-map pa-0 map-container" fluid>
     <v-skeleton-loader v-if="loading" type="image" full-height />
     <l-map :class="'l-map'" ref="mapRef" v-if="!loading" :zoom="zoom" :center="center" :crs="L.CRS.Simple"
-      :maxBounds="bounds" :maxZoom="4" @click="handleClick" style="position: absolute">
+      :maxBounds="bounds" :maxZoom="4" @click="handleClick">
       <l-image-overlay :url="mapUrl" :bounds="bounds" />
       <!-- Add existing markers from the database -->
       <Marker v-for="marker in markers" :marker="marker" :user-authorized="userAuthorized" @marker:removed="handleMarkerRemoved" />
@@ -60,18 +60,23 @@ function handleClick(event: L.LeafletMouseEvent) {
   lastNewMarkerPosition.value = event.latlng;
 }
 
-function updateMapDimensions() {
+function updateMapDimensions(log: boolean = true) {
   const mainRef = document.querySelector('.v-main');
   if (mainRef && mapRef.value && containerRef.value) {
     const paddingTop = mainRef.computedStyleMap().get('padding-top') as { value: number, unit: string };
-    console.log('[Map] Updating map dimensions', {
-      width: mainRef.clientWidth,
-      height: mainRef.clientHeight - paddingTop.value,
+    const width = mainRef.clientWidth;
+    const height = mainRef.clientHeight - paddingTop.value;
+    if (log) {
+      console.log('[Map] Updating map dimensions', {
+      paddingTop: paddingTop.value,
+      width,
+      height,
       mainRef,
       containerRef
     });
-    mapRef.value.$el.setAttribute('style', `width: ${mainRef.clientWidth}px; height: ${mainRef.clientHeight - paddingTop.value}px; position: absolute;`);
-    containerRef.value.$el.setAttribute('style', `padding-top: ${paddingTop.value}px;`);
+    }
+    mapRef.value.$el.setAttribute('style', `width: ${width}px; height: ${height}px; position: fixed !important;`);
+    // containerRef.value.$el.setAttribute('style', `padding-top: ${paddingTop.value}px !important;`);
   }
 }
 
@@ -107,7 +112,8 @@ async function loadUserAuthorization() {
 onMounted(async () => {
   await nextTick();
   updateMapDimensions();
-  window.addEventListener('resize', updateMapDimensions);
+  window.addEventListener('resize', () => updateMapDimensions(true));
+  setInterval(() => updateMapDimensions(false), 500);
 
   // setup map dimensions
   await loadMapDimensions();
@@ -122,11 +128,11 @@ onMounted(async () => {
 });
 
 onBeforeUnmount(() => {
-  window.removeEventListener('resize', updateMapDimensions);
+  window.removeEventListener('resize', () => updateMapDimensions(true));
 });
 </script>
 
-<style>
+<style scoped>
 .v-skeleton-loader {
   position: absolute !important;
   width: 100% !important;
@@ -137,5 +143,9 @@ onBeforeUnmount(() => {
   position: absolute !important;
   width: 100% !important;
   height: 100% !important;
+}
+
+.l-map {
+  position: fixed !important;
 }
 </style>
