@@ -1,13 +1,14 @@
 <template>
-  <v-menu offset-y>
+  <v-menu>
     <template v-slot:activator="{ props }">
       <v-btn
         v-bind="props"
         variant="text"
-        prepend-icon="mdi-translate"
         class="language-switcher mr-2"
+        :title="currentLanguageName"
       >
-        {{ currentLanguageName }}
+        <v-icon icon="mdi-translate" class="mr-2" />
+        <span class="fallback-text">{{ currentLanguageCode }}</span>
       </v-btn>
     </template>
     
@@ -17,11 +18,16 @@
         :key="code"
         @click="changeLanguage(code)"
         :active="currentLocale === code"
+        class="d-flex flex-row"
       >
-        <v-list-item-title>{{ name }}</v-list-item-title>
-        <template v-slot:prepend>
-          <v-icon v-if="currentLocale === code" icon="mdi-check" />
-        </template>
+        <v-tooltip :text="name">
+          <template v-slot:activator="{ props }">
+            <v-container v-bind="props" class="d-flex flex-row ma-0 pa-0">
+              <v-list-item-title class="mr-2">{{ code.toUpperCase() }}</v-list-item-title>
+              <v-icon v-if="currentLocale === code" icon="mdi-check" />
+            </v-container>
+          </template>
+        </v-tooltip>
       </v-list-item>
     </v-list>
   </v-menu>
@@ -37,6 +43,7 @@ const { locale } = useI18n()
 const availableLocales = getAvailableLocales()
 const currentLocale = computed(() => locale.value as LocaleKey)
 const currentLanguageName = computed(() => availableLocales[currentLocale.value])
+const currentLanguageCode = computed(() => currentLocale.value)
 
 async function changeLanguage(langCode: LocaleKey) {
   try {
@@ -46,9 +53,3 @@ async function changeLanguage(langCode: LocaleKey) {
   }
 }
 </script>
-
-<style scoped>
-.language-switcher {
-  min-width: 120px;
-}
-</style> 
