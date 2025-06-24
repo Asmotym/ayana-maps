@@ -1,0 +1,65 @@
+{
+  "common": {
+    "title": "Ayana Maps",
+    "disconnect": "Abmelden"
+  },
+  "navigation": {
+    "home": "Startseite",
+    "testing_ground": "Testbereich"
+  },
+  "home": {
+    "not_logged_in_title": "Sie sind nicht angemeldet",
+    "not_logged_in_message": "Bitte melden Sie sich bei Discord an, um die App zu verwenden"
+  },
+  "testing_ground": {
+    "title": "Abfrage-Testbereich",
+    "database_queries": {
+      "title": "Datenbankabfragen",
+      "get_version": "Version abrufen",
+      "list_tables": "Tabellen auflisten"
+    },
+    "users_queries": {
+      "title": "Benutzerabfragen",
+      "get_current_user": "Aktuellen Benutzer abrufen"
+    },
+    "map_markers_queries": {
+      "title": "Kartenmarker-Abfragen",
+      "get_map_markers": "Kartenmarker abrufen"
+    },
+    "marker_categories_queries": {
+      "title": "Marker-Kategorie-Abfragen",
+      "get_marker_categories": "Marker-Kategorien abrufen"
+    },
+    "query_results": "Abfrageergebnisse"
+  },
+  "marker_dialog": {
+    "label": "Bezeichnung",
+    "category": "Kategorie",
+    "description": "Beschreibung",
+    "label_required": "Bezeichnung ist erforderlich",
+    "label_max_length": "Bezeichnung muss weniger als 255 Zeichen lang sein",
+    "category_required": "Kategorie ist erforderlich",
+    "description_required": "Beschreibung ist erforderlich"
+  },
+  "map": {
+    "add_marker": {
+      "title": "Marker hinzufügen",
+      "submit": "Absenden"
+    },
+    "marker": {
+      "actions": {
+        "more": {
+          "button": "Mehr",
+          "close": "Schließen",
+          "created_at": "Erstellt am { date }"
+        },
+        "delete": {
+          "button": "Löschen",
+          "title": "Marker \"{ label }\" löschen",
+          "confirm": "Sind Sie sicher, dass Sie diesen Marker löschen möchten?",
+          "cancel": "Abbrechen"
+        }
+      }
+    }
+  }
+}

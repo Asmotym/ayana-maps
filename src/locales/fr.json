@@ -1,0 +1,65 @@
+{
+  "common": {
+    "title": "Ayana Maps",
+    "disconnect": "Se déconnecter"
+  },
+  "navigation": {
+    "home": "Accueil",
+    "testing_ground": "Zone de test"
+  },
+  "home": {
+    "not_logged_in_title": "Vous n'êtes pas connecté",
+    "not_logged_in_message": "Veuillez vous connecter à Discord pour utiliser l'application"
+  },
+  "testing_ground": {
+    "title": "Zone de test des requêtes",
+    "database_queries": {
+      "title": "Requêtes de base de données",
+      "get_version": "Obtenir la version",
+      "list_tables": "Lister les tables"
+    },
+    "users_queries": {
+      "title": "Requêtes utilisateurs",
+      "get_current_user": "Obtenir l'utilisateur actuel"
+    },
+    "map_markers_queries": {
+      "title": "Requêtes de marqueurs de carte",
+      "get_map_markers": "Obtenir les marqueurs de carte"
+    },
+    "marker_categories_queries": {
+      "title": "Requêtes de catégories de marqueurs",
+      "get_marker_categories": "Obtenir les catégories de marqueurs"
+    },
+    "query_results": "Résultats de requête"
+  },
+  "marker_dialog": {
+    "label": "Libellé",
+    "category": "Catégorie",
+    "description": "Description",
+    "label_required": "Le libellé est requis",
+    "label_max_length": "Le libellé doit contenir moins de 255 caractères.",
+    "category_required": "La catégorie est requise",
+    "description_required": "La description est requise"
+  },
+  "map": {
+    "add_marker": {
+      "title": "Ajouter un marqueur",
+      "submit": "Soumettre"
+    },
+    "marker": {
+      "actions": {
+        "more": {
+          "button": "Plus",
+          "close": "Fermer",
+          "created_at": "Créé le { date }"
+        },
+        "delete": {
+          "button": "Supprimer",
+          "title": "Supprimer le marqueur \"{ label }\"",
+          "confirm": "Êtes-vous sûr de vouloir supprimer ce marqueur ?",
+          "cancel": "Annuler"
+        }
+      }
+    }
+  }
+}

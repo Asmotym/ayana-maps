@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { DiscordService } from '../../services/discord.service';
 import { computed } from 'vue';
-import Map from '../Map.vue';
+import Map from '../parts/Map.vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const discordService = DiscordService.getInstance();
 const userLoggedIn = computed(() => {
   return discordService.user.value !== null;
 });
-
-const notLoggedInTitle = "You are not logged in";
-const notLoggedInMessage = "Please, login to Discord to use the app";
 </script>
 
 <template>
@@ -17,6 +17,6 @@ const notLoggedInMessage = "Please, login to Discord to use the app";
     <Map />
   </v-container>
   <v-container v-else class="d-flex justify-center align-center" style="height: 100vh">
-    <v-card :title="notLoggedInTitle" :text="notLoggedInMessage"></v-card>
+    <v-card :title="t('home.not_logged_in_title')" :text="t('home.not_logged_in_message')"></v-card>
   </v-container>
 </template>

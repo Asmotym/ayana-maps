@@ -2,7 +2,7 @@
     <v-dialog width="500" @after-leave="isEditing = false">
         <template v-slot:activator="{ props }">
             <v-btn class="mr-2" variant="outlined" color="primary" density="comfortable" v-bind="props">
-                <span>MORE</span>
+                <span>{{ t('map.marker.actions.more.button') }}</span>
                 <v-icon end icon="mdi-arrow-expand-all"></v-icon>
             </v-btn>
         </template>
@@ -10,8 +10,8 @@
             <v-card>
                 <v-card-title class="d-flex flex-row justify-space-between align-center">
                     <span v-if="!isEditing">{{ marker.label }}</span>
-                    <v-text-field v-else v-model="editableMarker!.label" density="compact" label="Label" width="100%" />
-                    <v-tooltip text="Close">
+                    <v-text-field v-else v-model="editableMarker!.label" density="compact" :label="t('marker_dialog.label')" width="100%" />
+                    <v-tooltip :text="t('map.marker.actions.more.close')">
                         <template v-slot:activator="{ props }">
                             <v-container class="d-flex flex-row justify-end pa-0">
                                 <v-btn v-if="!isEditing && userAuthorized" class="mr-1" icon="mdi-pencil"
@@ -28,17 +28,17 @@
                 <v-card-subtitle>
                     <span v-if="!isEditing" class="text-caption">{{ marker.category_name }}</span>
                     <v-select v-else v-model="editableMarker!.category_id" :items="categories" item-title="name" item-value="id"
-                        density="compact" label="Category" width="100%" />
+                        density="compact" :label="t('marker_dialog.category')" width="100%" />
                 </v-card-subtitle>
 
                 <v-card-text>
                     <div v-if="!isEditing">{{ marker.description }}</div>
-                    <v-textarea v-else v-model="editableMarker!.description" density="compact" label="Description"
+                    <v-textarea v-else v-model="editableMarker!.description" density="compact" :label="t('marker_dialog.description')"
                         width="100%" />
                 </v-card-text>
 
                 <v-card-actions>
-                    <v-tooltip :text="'Created ' + marker.created_at">
+                    <v-tooltip :text="t('map.marker.actions.more.created_at', { date: marker.created_at })">
                         <template v-slot:activator="{ props }">
                             <v-chip prepend-icon="mdi-calendar" variant="outlined" v-bind="props">
                                 {{ formatHumanDate(marker.created_at) }}
@@ -58,6 +58,9 @@ import { updateMapMarker } from '../../../../database/queries/map-markers.query'
 import { formatHumanDate } from '../../../../utils/date';
 import { getMarkerCategories } from '../../../../database/queries/marker-categories.query';
 import { useLogger } from 'vue-logger-plugin';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const logger = useLogger();
 

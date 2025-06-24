@@ -1,0 +1,65 @@
+{
+  "common": {
+    "title": "Ayana Maps",
+    "disconnect": "Logout"
+  },
+  "navigation": {
+    "home": "Home",
+    "testing_ground": "Testing Ground"
+  },
+  "home": {
+    "not_logged_in_title": "You are not logged in",
+    "not_logged_in_message": "Please, login to Discord to use the app"
+  },
+  "testing_ground": {
+    "title": "Queries Testing Ground",
+    "database_queries": {
+      "title": "Database Queries",
+      "get_version": "Get Version",
+      "list_tables": "List Tables"
+    },
+    "users_queries": {
+      "title": "Users Queries",
+      "get_current_user": "Get Current User"
+    },
+    "map_markers_queries": {
+      "title": "Map Markers Queries",
+      "get_map_markers": "Get Map Markers"
+    },
+    "marker_categories_queries": {
+      "title": "Marker Categories Queries",
+      "get_marker_categories": "Get Marker Categories"
+    },
+    "query_results": "Query Results"
+  },
+  "marker_dialog": {
+    "label": "Label",
+    "category": "Category",
+    "description": "Description",
+    "label_required": "Label is required",
+    "label_max_length": "Label must be less than 255 characters",
+    "category_required": "Category is required",
+    "description_required": "Description is required"
+  },
+  "map": {
+    "add_marker": {
+      "title": "Add Marker",
+      "submit": "Submit"
+    },
+    "marker": {
+      "actions": {
+        "more": {
+          "button": "More",
+          "close": "Close",
+          "created_at": "Created at { date }"
+        },
+        "delete": {
+          "button": "Delete",
+          "title": "Delete Marker \"{ label }\"",
+          "confirm": "Are you sure you want to delete this marker?",
+          "cancel": "Cancel"
+        }
+      }
+    }
+  }
+}

@@ -6,8 +6,8 @@
         <template v-slot:default="{ isActive }">
             <v-card>
                 <v-card-title class="d-flex flex-row justify-space-between align-center">
-                    <span>Removing marker "{{ marker.label }}"</span>
-                    <v-tooltip text="Close">
+                    <span>{{ t('map.marker.actions.delete.title', { label: marker.label }) }}</span>
+                    <v-tooltip :text="t('map.marker.actions.delete.close')">
                         <template v-slot:activator="{ props }">
                             <v-btn v-bind="props" icon="mdi-close" @click="isActive.value = false" density="comfortable"
                                 variant="tonal" size="small" />
@@ -16,9 +16,9 @@
                 </v-card-title>
 
                 <v-card-text>
-                    Are you sure you want to remove this marker?
+                    {{ t('map.marker.actions.delete.confirm') }}
                     <v-btn class="mt-4" variant="flat" color="error" density="comfortable" block @click="handleRemove">
-                        Remove
+                        {{ t('map.marker.actions.delete.button') }}
                     </v-btn>
                 </v-card-text>
             </v-card>
@@ -30,6 +30,9 @@
 import type { MapMarker } from '../../../../../netlify/core/database/types';
 import { computed, defineProps } from 'vue';
 import { deleteMapMarker } from '../../../../database/queries/map-markers.query';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const props = defineProps<{
     marker: MapMarker;

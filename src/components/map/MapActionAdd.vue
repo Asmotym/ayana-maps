@@ -2,7 +2,7 @@
     <v-dialog width="500" v-model="dialogActive" v-if="userAuthorized" @update:model-value="resetForm">
         <v-card>
             <v-card-title class="d-flex flex-row justify-space-between align-center">
-                <span>Add new marker</span>
+                <span>{{ t('map.add_marker.title') }}</span>
                 <v-tooltip text="Close">
                     <template v-slot:activator="{ props }">
                         <v-btn v-bind="props" icon="mdi-close" @click="dialogActive = false" density="comfortable"
@@ -13,13 +13,13 @@
 
             <v-card-text>
                 <v-form v-model="valid">
-                    <v-text-field counter="255" label="Label" v-model="label" :rules="labelRules" />
-                    <v-select label="Category" v-model="category" :items="categories" item-title="name" item-value="id"
+                    <v-text-field counter="255" :label="t('marker_dialog.label')" v-model="label" :rules="labelRules" />
+                    <v-select :label="t('marker_dialog.category')" v-model="category" :items="categories" item-title="name" item-value="id"
                         :rules="categoryRules" />
-                    <v-textarea label="Description" v-model="description" :rules="descriptionRules" />
+                    <v-textarea :label="t('marker_dialog.description')" v-model="description" :rules="descriptionRules" />
                     <v-btn class="mt-4" variant="outlined" color="primary" density="comfortable" :disabled="!valid"
                         block @click="handleSubmit">
-                        Submit
+                        {{ t('map.add_marker.submit') }}
                     </v-btn>
                 </v-form>
             </v-card-text>
@@ -35,6 +35,9 @@ import { insertMapMarker } from '../../database/queries/map-markers.query';
 import { useLogger } from 'vue-logger-plugin';
 import type { MarkerCategory } from '../../../netlify/core/database/types';
 import { getMarkerCategories } from '../../database/queries/marker-categories.query';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const logger = useLogger();
 
@@ -62,26 +65,26 @@ const labelRules = ref<((value: string) => string | boolean)[]>([
     (value: string) => {
         if (value) return true;
 
-        return 'Label is required';
+        return t('marker_dialog.label_required');
     },
     (value: string) => {
         if (value.length <= 255) return true;
 
-        return 'Label must be less than 255 characters';
+        return t('marker_dialog.label_max_length');
     }
 ]);
 const categoryRules = ref<((value: string) => string | boolean)[]>([
     (value: string) => {
         if (value) return true;
 
-        return 'Category is required';
+        return t('marker_dialog.category_required');
     }
 ]);
 const descriptionRules = ref<((value: string) => string | boolean)[]>([
     (value: string) => {
         if (value) return true;
 
-        return 'Description is required';
+        return t('marker_dialog.description_required');
     }
 ]);
 const categories = ref<MarkerCategory[]>([]);

@@ -1,0 +1,65 @@
+{
+  "common": {
+    "title": "Ayana Maps",
+    "disconnect": "Cerrar sesión"
+  },
+  "navigation": {
+    "home": "Inicio",
+    "testing_ground": "Área de pruebas"
+  },
+  "home": {
+    "not_logged_in_title": "No has iniciado sesión",
+    "not_logged_in_message": "Por favor, inicia sesión en Discord para usar la aplicación"
+  },
+  "testing_ground": {
+    "title": "Área de pruebas de consultas",
+    "database_queries": {
+      "title": "Consultas de base de datos",
+      "get_version": "Obtener versión",
+      "list_tables": "Listar tablas"
+    },
+    "users_queries": {
+      "title": "Consultas de usuarios",
+      "get_current_user": "Obtener usuario actual"
+    },
+    "map_markers_queries": {
+      "title": "Consultas de marcadores de mapa",
+      "get_map_markers": "Obtener marcadores de mapa"
+    },
+    "marker_categories_queries": {
+      "title": "Consultas de categorías de marcadores",
+      "get_marker_categories": "Obtener categorías de marcadores"
+    },
+    "query_results": "Resultados de consulta"
+  },
+  "marker_dialog": {
+    "label": "Etiqueta",
+    "category": "Categoría",
+    "description": "Descripción",
+    "label_required": "La etiqueta es requerida",
+    "label_max_length": "La etiqueta debe tener menos de 255 caracteres",
+    "category_required": "La categoría es requerida",
+    "description_required": "La descripción es requerida"
+  },
+  "map": {
+    "add_marker": {
+      "title": "Agregar marcador",
+      "submit": "Enviar"
+    },
+    "marker": {
+      "actions": {
+        "more": {
+          "button": "Más",
+          "close": "Cerrar",
+          "created_at": "Creado el { date }"
+        },
+        "delete": {
+          "button": "Eliminar",
+          "title": "Eliminar marcador \"{ label }\"",
+          "confirm": "¿Estás seguro de que quieres eliminar este marcador?",
+          "cancel": "Cancelar"
+        }
+      }
+    }
+  }
+}

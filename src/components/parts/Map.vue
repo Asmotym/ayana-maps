@@ -17,14 +17,14 @@
 import { ref, computed, onMounted, nextTick, onBeforeUnmount } from 'vue';
 import { LMap, LImageOverlay } from '@vue-leaflet/vue-leaflet';
 import * as L from 'leaflet';
-import mapUrl from '../assets/map.jpg';
-import { getMapMarkers } from '../database/queries/map-markers.query';
-import { type MapMarker, UserRights } from '../../netlify/core/database/types';
+import mapUrl from '../../assets/map.jpg';
+import { getMapMarkers } from '../../database/queries/map-markers.query';
+import { type MapMarker, UserRights } from '../../../netlify/core/database/types';
 import { VContainer } from 'vuetify/lib/components/index.mjs';
-import Marker from './map/Marker.vue';
-import MapActionAdd from './map/MapActionAdd.vue';
-import { DiscordService } from '../services/discord.service';
-import { isUserAuthorized } from '../database/queries/users.query';
+import Marker from '../map/Marker.vue';
+import MapActionAdd from '../map/MapActionAdd.vue';
+import { DiscordService } from '../../services/discord.service';
+import { isUserAuthorized } from '../../database/queries/users.query';
 import { useLogger } from 'vue-logger-plugin';
 
 // initialize ref & computed
@@ -76,7 +76,6 @@ function updateMapDimensions(log: boolean = true) {
     });
     }
     mapRef.value.$el.setAttribute('style', `width: ${width}px; height: ${height}px; position: fixed !important;`);
-    // containerRef.value.$el.setAttribute('style', `padding-top: ${paddingTop.value}px !important;`);
   }
 }
 
