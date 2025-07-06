@@ -50,7 +50,7 @@ const i18n = createI18n({
 })
 
 // Language switcher utility
-export async function setLocale(locale: LocaleKey): Promise<void> {
+export function setLocale(locale: LocaleKey): void {
   if (!availableLocales[locale]) {
     console.warn(`Locale ${locale} is not available`)
     return
@@ -60,14 +60,7 @@ export async function setLocale(locale: LocaleKey): Promise<void> {
   localStorage.setItem('locale', locale)
   document.documentElement.lang = locale
   
-  // Try to use logger if available, otherwise use console
-  try {
-    const { useLogger } = await import('vue-logger-plugin')
-    const logger = useLogger()
-    logger.info(`Locale changed to ${locale}`)
-  } catch (error) {
-    console.info(`Locale changed to ${locale}`)
-  }
+  console.info(`Locale changed to ${locale}`)
 }
 
 // Get current locale

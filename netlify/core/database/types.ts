@@ -25,3 +25,13 @@ export type MarkerCategory = {
     id?: number;
     name: string;
 }
+
+export enum MarkerCategoryMapping {
+    City = 1,
+    Village = 2,
+    Capital = 3,
+    Fortress = 4,
+    Ruin = 5,
+    Mine = 6,
+    Cavern = 7
+}

@@ -1,6 +1,6 @@
 <template>
-    <l-marker :lat-lng="[marker.x, marker.y]" class="map-marker">
-        <l-tooltip class="map-marker__tooltip">{{ marker.label }}</l-tooltip>
+    <l-marker :lat-lng="[marker.x, marker.y]" class="map-marker" :icon="getMarkerIconFromMarker(marker)">
+        <l-tooltip class="map-marker__tooltip">{{ marker.label }} <i>({{ marker.category_name }})</i></l-tooltip>
         <l-popup ref="popupRef" class="map-marker__popup">
             <v-card class="">
                 <template #title>
@@ -35,6 +35,7 @@ import type { MapMarker } from '../../../netlify/core/database/types';
 import { computed, defineProps, ref } from 'vue';
 import MarkerActions from './marker/MarkerActions.vue';
 import { useLogger } from 'vue-logger-plugin';
+import { getMarkerIconFromMarker } from '../../helpers/markers-icon.helper';
 
 const logger = useLogger();
 
