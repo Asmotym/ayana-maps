@@ -1,8 +1,8 @@
 <template>
     <l-marker :lat-lng="[marker.x, marker.y]" class="map-marker" :icon="getMarkerIconFromMarker(marker)">
         <l-tooltip class="map-marker__tooltip">{{ marker.label }} <i>({{ marker.category_name }})</i></l-tooltip>
-        <l-popup ref="popupRef" class="map-marker__popup">
-            <v-card class="">
+        <l-popup ref="popupRef" class="map-marker__popup" @ready="">
+            <v-card>
                 <template #title>
                     <v-container class="d-flex justify-space-between align-center pa-0">
                         <span class="map-marker__popup-label">{{ marker.label }}</span>
@@ -32,10 +32,11 @@
 <script setup lang="ts">
 import { LMarker, LTooltip, LPopup } from '@vue-leaflet/vue-leaflet';
 import type { MapMarker } from '../../../netlify/core/database/types';
-import { computed, defineProps, ref } from 'vue';
+import { computed, defineProps, ref, defineExpose, onMounted } from 'vue';
 import MarkerActions from './marker/MarkerActions.vue';
 import { useLogger } from 'vue-logger-plugin';
 import { getMarkerIconFromMarker } from '../../helpers/markers-icon.helper';
+import * as L from 'leaflet';
 
 const logger = useLogger();
 
@@ -50,6 +51,16 @@ const emit = defineEmits<{
     'marker:removed': [marker: MapMarker];
     'marker:updated': [marker: MapMarker];
 }>();
+const isPopupActive = ref<boolean>(false);
+
+// function isPopupActive(): boolean {
+//     console.log(getPopup(), getPopup().getLatLng());
+//     return getPopup().getLatLng() !== null;
+// }
+
+function getPopup(): L.Popup {
+    return popupRef.value?.leafletObject as L.Popup;
+}
 
 function handleMarkerRemoved(marker: MapMarker) {
     closePopup();
@@ -62,8 +73,28 @@ function handleMarkerUpdated(marker: MapMarker) {
 
 function closePopup() {
     logger.info('Closing popup');
-    popupRef.value?.leafletObject.close();
+    getPopup().close();
 }
+
+function handlePopupEvents() {
+    const popup = getPopup();
+    if (typeof popup !== 'object') {
+        setTimeout(() => handlePopupEvents(), 10);
+        return;
+    }
+
+    // force timeout on 'remove' to prevent the new marker popup to activate
+    popup.on('remove', () => setTimeout(() => isPopupActive.value = false, 100));
+    popup.on('add', () => isPopupActive.value = true);
+}
+
+onMounted(() => {
+    handlePopupEvents();
+})
+
+defineExpose({
+    isPopupActive,
+})
 </script>
 
 <style>

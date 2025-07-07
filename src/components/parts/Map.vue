@@ -5,7 +5,7 @@
       :maxBounds="bounds" :maxZoom="4" @click="handleClick">
       <l-image-overlay :url="mapUrl" :bounds="bounds" />
       <!-- Add existing markers from the database -->
-      <Marker v-for="marker in markers" :marker="marker" :user-authorized="userAuthorized"
+      <Marker v-for="marker in markers" ref="markersComponents" :marker="marker" :user-authorized="userAuthorized"
         @marker:removed="handleMarkerRemoved" />
       <!-- Add new marker dialog -->
       <MapActionAdd :active="dialogAddMarkerActive" :position="lastNewMarkerPosition" :user-authorized="userAuthorized"
@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, nextTick, onBeforeUnmount } from 'vue';
+import { ref, computed, onMounted, nextTick, onBeforeUnmount, useTemplateRef } from 'vue';
 import { LMap, LImageOverlay } from '@vue-leaflet/vue-leaflet';
 import * as L from 'leaflet';
 import mapUrl from '../../assets/map.jpg';
@@ -43,6 +43,7 @@ const dialogAddMarkerActive = ref<boolean>(false);
 const lastNewMarkerPosition = ref<L.LatLng | null>(null);
 const userAuthorized = ref<boolean>(false);
 const logger = useLogger();
+const markersRefs = useTemplateRef('markersComponents')
 
 async function loadMapDimensions(): Promise<void> {
   return new Promise<void>((resolve) => {
@@ -58,6 +59,12 @@ async function loadMapDimensions(): Promise<void> {
 }
 
 function handleClick(event: L.LeafletMouseEvent) {
+  // check if a marker popup is active
+  // if so, we don't show the new marker popup
+  const hasActivePopup = markersRefs.value?.filter((markerRef) => markerRef?.isPopupActive === true);
+  if (hasActivePopup && hasActivePopup?.length > 0) return;
+
+  // show the new marker popup
   dialogAddMarkerActive.value = true;
   lastNewMarkerPosition.value = event.latlng;
 }
