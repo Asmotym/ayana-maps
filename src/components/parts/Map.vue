@@ -5,10 +5,12 @@
       :maxBounds="bounds" :maxZoom="4" @click="handleClick">
       <l-image-overlay :url="mapUrl" :bounds="bounds" />
       <!-- Add existing markers from the database -->
-      <Marker v-for="marker in markers" :marker="marker" :user-authorized="userAuthorized" @marker:removed="handleMarkerRemoved" />
+      <Marker v-for="marker in markers" :marker="marker" :user-authorized="userAuthorized"
+        @marker:removed="handleMarkerRemoved" />
       <!-- Add new marker dialog -->
       <MapActionAdd :active="dialogAddMarkerActive" :position="lastNewMarkerPosition" :user-authorized="userAuthorized"
-        @update:active="dialogAddMarkerActive = $event" @marker:added="handleMarkerAdded" @marker:updated="handleMarkerUpdated" />
+        @update:active="dialogAddMarkerActive = $event" @marker:added="handleMarkerAdded"
+        @marker:updated="handleMarkerUpdated" />
     </l-map>
   </v-container>
 </template>
@@ -68,12 +70,12 @@ function updateMapDimensions(log: boolean = true) {
     const height = mainRef.clientHeight - paddingTop.value;
     if (log) {
       console.log('[Map] Updating map dimensions', {
-      paddingTop: paddingTop.value,
-      width,
-      height,
-      mainRef,
-      containerRef
-    });
+        paddingTop: paddingTop.value,
+        width,
+        height,
+        mainRef,
+        containerRef
+      });
     }
     mapRef.value.$el.setAttribute('style', `width: ${width}px; height: ${height}px; position: fixed !important;`);
   }
@@ -138,7 +140,7 @@ onBeforeUnmount(() => {
   height: 100% !important;
 }
 
-.v-skeleton-loader > .v-skeleton-loader__bone.v-skeleton-loader__image {
+.v-skeleton-loader>.v-skeleton-loader__bone.v-skeleton-loader__image {
   position: absolute !important;
   width: 100% !important;
   height: 100% !important;
