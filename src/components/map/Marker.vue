@@ -5,7 +5,7 @@
             <v-card class="">
                 <template #title>
                     <v-container class="d-flex justify-space-between align-center pa-0">
-                        <span class="">{{ marker.label }}</span>
+                        <span class="map-marker__popup-label">{{ marker.label }}</span>
                         
                         <v-tooltip text="Close">
                         <template v-slot:activator="{ props }">
@@ -52,6 +52,7 @@ const emit = defineEmits<{
 }>();
 
 function handleMarkerRemoved(marker: MapMarker) {
+    closePopup();
     emit('marker:removed', marker);
 }
 
@@ -81,5 +82,10 @@ function closePopup() {
 
 .leaflet-popup-content {
     margin: 0 !important;
+    width: max-content !important;
+    max-width: 250px;
+}
+.map-marker__popup-label {
+    text-wrap: auto;
 }
 </style>

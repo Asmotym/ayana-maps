@@ -57,7 +57,8 @@
           "button": "Löschen",
           "title": "Marker \"{ label }\" löschen",
           "confirm": "Sind Sie sicher, dass Sie diesen Marker löschen möchten?",
-          "cancel": "Abbrechen"
+          "cancel": "Abbrechen",
+          "close": "Schließen"
         }
       }
     }

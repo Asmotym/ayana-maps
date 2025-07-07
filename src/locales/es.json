@@ -57,7 +57,8 @@
           "button": "Eliminar",
           "title": "Eliminar marcador \"{ label }\"",
           "confirm": "¿Estás seguro de que quieres eliminar este marcador?",
-          "cancel": "Cancelar"
+          "cancel": "Cancelar",
+          "close": "Cerrar"
         }
       }
     }
