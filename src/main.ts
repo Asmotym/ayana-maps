@@ -1,5 +1,4 @@
 import { createApp } from 'vue'
-import './style.css'
 import 'leaflet/dist/leaflet.css'
 import 'vuetify/dist/vuetify.css'
 import '@mdi/font/css/materialdesignicons.css'

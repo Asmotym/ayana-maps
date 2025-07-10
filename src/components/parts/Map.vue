@@ -12,6 +12,8 @@
         @update:active="dialogAddMarkerActive = $event" @marker:added="handleMarkerAdded"
         @marker:updated="handleMarkerUpdated" />
     </l-map>
+    <!-- Map Filters -->
+    <MapFilters />
   </v-container>
 </template>
 
@@ -28,6 +30,7 @@ import MapActionAdd from '../map/MapActionAdd.vue';
 import { DiscordService } from '../../services/discord.service';
 import { isUserAuthorized } from '../../database/queries/users.query';
 import { useLogger } from 'vue-logger-plugin';
+import MapFilters from '../map/MapFilters.vue';
 
 // initialize ref & computed
 const zoom = ref<number>(1);
