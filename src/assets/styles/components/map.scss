@@ -1,0 +1,21 @@
+.leaflet-control {
+    &-zoom {
+        .leaflet-control-zoom-in, .leaflet-control-zoom-out {
+            background-color: rgb(var(--v-theme-surface)) !important;
+            border: none;
+            outline: none;
+    
+            & > span {
+                color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+            }
+    
+            &[aria-disabled="true"] {
+                opacity: var(--v-disabled-opacity);
+            }
+        }
+    }
+
+    &-attribution {
+        background-color: rgba(var(--v-theme-surface), var(--v-medium-emphasis-opacity)) !important;
+    }
+}
