@@ -29,8 +29,8 @@
 <script setup lang="ts">
 import type { MapMarker } from '../../../../../netlify/core/database/types';
 import { computed, defineProps, ref, type Ref } from 'vue';
-import { deleteMapMarker } from '../../../../database/queries/map-markers.query';
 import { useI18n } from 'vue-i18n';
+import { store } from '../../../../store/index.store';
 
 const { t } = useI18n();
 
@@ -52,7 +52,7 @@ async function handleRemove(isActive: Ref<boolean, boolean>) {
     isDeleting.value = true;
 
     // remove marker
-    await deleteMapMarker(marker.value);
+    await store.mapMarkers.delete(marker.value);
 
     // stop loading & close popup
     isDeleting.value = false;

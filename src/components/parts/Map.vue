@@ -5,12 +5,10 @@
       :maxBounds="bounds" :maxZoom="4" @click="handleClick">
       <l-image-overlay :url="mapUrl" :bounds="bounds" />
       <!-- Add existing markers from the database -->
-      <Marker v-for="marker in markers" ref="markersComponents" :marker="marker" :user-authorized="userAuthorized"
-        @marker:removed="handleMarkerRemoved" />
+      <Marker v-for="marker in store.mapMarkers.markers" ref="markersComponents" :marker="marker" :user-authorized="userAuthorized" />
       <!-- Add new marker dialog -->
       <MapActionAdd :active="dialogAddMarkerActive" :position="lastNewMarkerPosition" :user-authorized="userAuthorized"
-        @update:active="dialogAddMarkerActive = $event" @marker:added="handleMarkerAdded"
-        @marker:updated="handleMarkerUpdated" />
+        @update:active="dialogAddMarkerActive = $event" />
     </l-map>
     <!-- Map Filters -->
     <MapFilters />
@@ -22,8 +20,7 @@ import { ref, computed, onMounted, nextTick, onBeforeUnmount, useTemplateRef } f
 import { LMap, LImageOverlay } from '@vue-leaflet/vue-leaflet';
 import * as L from 'leaflet';
 import mapUrl from '../../assets/map.jpg';
-import { getMapMarkers } from '../../database/queries/map-markers.query';
-import { type MapMarker, UserRights } from '../../../netlify/core/database/types';
+import { UserRights } from '../../../netlify/core/database/types';
 import { VContainer } from 'vuetify/lib/components/index.mjs';
 import Marker from '../map/Marker.vue';
 import MapActionAdd from '../map/MapActionAdd.vue';
@@ -31,6 +28,7 @@ import { DiscordService } from '../../services/discord.service';
 import { isUserAuthorized } from '../../database/queries/users.query';
 import { useLogger } from 'vue-logger-plugin';
 import MapFilters from '../map/MapFilters.vue';
+import { store } from '../../store/index.store';
 
 // initialize ref & computed
 const zoom = ref<number>(1);
@@ -39,7 +37,6 @@ const mapHeight = ref<number>(0);
 const loading = ref<boolean>(true);
 const bounds = computed<L.LatLngBoundsLiteral>(() => [[0, 0], [mapHeight.value, mapWidth.value]]);
 const center = computed<L.PointExpression>(() => [mapHeight.value / 2, mapWidth.value / 2]);
-const markers = ref<MapMarker[]>([]);
 const mapRef = ref<typeof LMap | null>(null);
 const containerRef = ref<typeof VContainer | null>(null);
 const dialogAddMarkerActive = ref<boolean>(false);
@@ -91,24 +88,9 @@ function updateMapDimensions(log: boolean = true) {
   }
 }
 
-function handleMarkerAdded(marker: MapMarker) {
-  logger.info('Marker added', marker);
-  loadMapMarkers();
-}
-
-function handleMarkerRemoved(marker: MapMarker) {
-  logger.info('Marker removed', marker);
-  loadMapMarkers();
-}
-
-function handleMarkerUpdated(marker: MapMarker) {
-  logger.info('Marker updated', marker);
-  loadMapMarkers();
-}
-
 async function loadMapMarkers() {
-  markers.value = await getMapMarkers() as MapMarker[];
-  logger.info('Map markers loaded', markers.value);
+  await store.mapMarkers.getAll();
+  logger.info('Map markers loaded', store.mapMarkers.markers);
 }
 
 async function loadUserAuthorization() {

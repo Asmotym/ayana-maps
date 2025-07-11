@@ -14,7 +14,7 @@
             <v-card-text>
                 <v-form v-model="valid">
                     <v-text-field counter="255" :label="t('marker_dialog.label')" v-model="label" :rules="labelRules" />
-                    <v-select :label="t('marker_dialog.category')" v-model="category" :items="categories" item-title="name" item-value="id"
+                    <v-select :label="t('marker_dialog.category')" v-model="category" :items="store.markerCategories.markerCategories" item-title="name" item-value="id"
                         :rules="categoryRules" />
                     <v-textarea :label="t('marker_dialog.description')" v-model="description" :rules="descriptionRules" />
                     <v-btn class="mt-4" variant="outlined" color="primary" density="comfortable" :disabled="!valid"
@@ -31,11 +31,8 @@
 import { computed, defineProps, defineEmits, onMounted, ref } from 'vue';
 import type * as L from 'leaflet';
 import type { MapMarker } from '../../../netlify/core/database/types';
-import { insertMapMarker } from '../../database/queries/map-markers.query';
 import { useLogger } from 'vue-logger-plugin';
-import type { MarkerCategory } from '../../../netlify/core/database/types';
-// import { getMarkerCategories } from '../../database/queries/marker-categories.query';
-import { useMarkerCategoriesStore } from '../../store/index.store'
+import { store } from '../../store/index.store'
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -88,13 +85,10 @@ const descriptionRules = ref<((value: string) => string | boolean)[]>([
         return t('marker_dialog.description_required');
     }
 ]);
-const categories = ref<MarkerCategory[]>([]);
 const category = ref<number | null>(null);
-const markerCategoriesStore = useMarkerCategoriesStore();
 
 onMounted(async () => {
-    await markerCategoriesStore.getAll()
-    categories.value = markerCategoriesStore.markerCategories;
+    await store.markerCategories.getAll();
 });
 
 function resetForm() {
@@ -115,7 +109,7 @@ async function handleSubmit() {
     } as MapMarker;
 
     logger.info('Adding new marker', { marker, category: category.value });
-    await insertMapMarker(marker);
+    await store.mapMarkers.insert(marker);
     dialogActive.value = false;
     emit('marker:added', marker);
     resetForm();

@@ -47,7 +47,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { getDatabaseVersion, getTables } from '../../database/database'
+import { getDatabaseVersion, getTables } from '../../database/api'
 import { getMapMarkers } from '../../database/queries/map-markers.query'
 import { DiscordService } from '../../services/discord.service'
 import { getUser } from '../../database/queries/users.query'

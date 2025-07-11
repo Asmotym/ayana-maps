@@ -54,11 +54,11 @@
 <script setup lang="ts">
 import type { MapMarker, MarkerCategory } from '../../../../../netlify/core/database/types';
 import { computed, defineProps, onMounted, ref, watch } from 'vue';
-import { updateMapMarker } from '../../../../database/queries/map-markers.query';
 import { formatHumanDate } from '../../../../utils/date';
 import { getMarkerCategories } from '../../../../database/queries/marker-categories.query';
 import { useLogger } from 'vue-logger-plugin';
 import { useI18n } from 'vue-i18n';
+import { store } from '../../../../store/index.store';
 
 const { t } = useI18n();
 
@@ -114,7 +114,7 @@ async function handleEdit() {
     if (isEditing.value) {
         // Currently editing, so save changes
         isSaving.value = true;
-        await updateMapMarker(editableMarker.value as MapMarker);
+        await store.mapMarkers.update(editableMarker.value as MapMarker);
         emit('marker:updated', editableMarker.value as MapMarker);
         isSaving.value = false;
         isEditing.value = false;
