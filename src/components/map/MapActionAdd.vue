@@ -34,7 +34,8 @@ import type { MapMarker } from '../../../netlify/core/database/types';
 import { insertMapMarker } from '../../database/queries/map-markers.query';
 import { useLogger } from 'vue-logger-plugin';
 import type { MarkerCategory } from '../../../netlify/core/database/types';
-import { getMarkerCategories } from '../../database/queries/marker-categories.query';
+// import { getMarkerCategories } from '../../database/queries/marker-categories.query';
+import { useMarkerCategoriesStore } from '../../store/index.store'
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
@@ -89,9 +90,11 @@ const descriptionRules = ref<((value: string) => string | boolean)[]>([
 ]);
 const categories = ref<MarkerCategory[]>([]);
 const category = ref<number | null>(null);
+const markerCategoriesStore = useMarkerCategoriesStore();
 
 onMounted(async () => {
-    categories.value = await getMarkerCategories();
+    await markerCategoriesStore.getAll()
+    categories.value = markerCategoriesStore.markerCategories;
 });
 
 function resetForm() {

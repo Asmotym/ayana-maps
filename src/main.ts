@@ -10,6 +10,7 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import logger from './plugins/logger.plugin'
 import i18n from './plugins/i18n.plugin'
+import store from './plugins/store.plugin'
 
 const vuetify = createVuetify({
     components,
@@ -27,6 +28,7 @@ app.use(router)
 app.use(vuetify)
 app.use(logger)
 app.use(i18n)
+app.use(store);
 app.mount('#app')
 
 logger.info('Application started')

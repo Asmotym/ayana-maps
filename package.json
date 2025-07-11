@@ -15,12 +15,12 @@
     "@netlify/neon": "^0.1.0",
     "@vuetify/loader-shared": "^2.1.0",
     "dotenv": "^16.5.0",
+    "pinia": "^3.0.3",
     "vue": "^3.5.13",
     "vue-i18n": "^9.14.4",
     "vue-logger-plugin": "2.2.3",
     "vue-router": "^4.5.1",
-    "vuetify": "^3.8.10",
-    "vuex": "^4.1.0"
+    "vuetify": "^3.8.10"
   },
   "devDependencies": {
     "@netlify/functions": "4.1.6",
