@@ -47,12 +47,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { getDatabaseVersion, getTables } from '../../database/api'
-import { getMapMarkers } from '../../database/queries/map-markers.query'
+// import { getDatabaseVersion, getTables } from '../../database/api'
 import { DiscordService } from '../../services/discord.service'
-import { getUser } from '../../database/queries/users.query'
-import { getMarkerCategories } from '../../database/queries/marker-categories.query'
 import { useI18n } from 'vue-i18n'
+import { store } from '../../store/index.store'
 
 const { t } = useI18n()
 
@@ -65,19 +63,19 @@ async function performQuery(queryType: string) {
     loadingQuery.value = queryType
     switch (queryType) {
         case 'version':
-            dbData.value = await getDatabaseVersion()
+            // dbData.value = await getDatabaseVersion()
             break
         case 'tables':
-            dbData.value = await getTables()
+            // dbData.value = await getTables()
             break
         case 'get_current_user':
-            dbData.value = await getUser(DiscordService.getInstance().getUser()?.id as string)
+            dbData.value = await store.user().getUser(DiscordService.getInstance().getUser()?.id as string)
             break
         case 'map_markers':
-            dbData.value = await getMapMarkers()
+            dbData.value = await store.mapMarkers().getAll()
             break
         case 'marker_categories':
-            dbData.value = await getMarkerCategories()
+            dbData.value = await store.markerCategories().getAll()
             break
     }
     loadingQuery.value = null

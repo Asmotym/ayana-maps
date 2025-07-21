@@ -114,7 +114,7 @@ async function handleEdit() {
     if (isEditing.value) {
         // Currently editing, so save changes
         isSaving.value = true;
-        await store.mapMarkers.update(editableMarker.value as MapMarker);
+        await store.mapMarkers().update(editableMarker.value as MapMarker);
         emit('marker:updated', editableMarker.value as MapMarker);
         isSaving.value = false;
         isEditing.value = false;

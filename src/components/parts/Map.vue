@@ -5,7 +5,7 @@
       :maxBounds="bounds" :maxZoom="4" @click="handleClick">
       <l-image-overlay :url="mapUrl" :bounds="bounds" />
       <!-- Add existing markers from the database -->
-      <Marker v-for="marker in store.mapMarkers.markers" ref="markersComponents" :marker="marker" :user-authorized="userAuthorized" />
+      <Marker v-for="marker in store.mapMarkers().markers" ref="markersComponents" :marker="marker" :user-authorized="userAuthorized" />
       <!-- Add new marker dialog -->
       <MapActionAdd :active="dialogAddMarkerActive" :position="lastNewMarkerPosition" :user-authorized="userAuthorized"
         @update:active="dialogAddMarkerActive = $event" />
@@ -89,8 +89,8 @@ function updateMapDimensions(log: boolean = true) {
 }
 
 async function loadMapMarkers() {
-  await store.mapMarkers.getAll();
-  logger.info('Map markers loaded', store.mapMarkers.markers);
+  await store.mapMarkers().getAll();
+  logger.info('Map markers loaded', store.mapMarkers().markers);
 }
 
 async function loadUserAuthorization() {

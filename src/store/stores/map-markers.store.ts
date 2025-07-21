@@ -3,7 +3,7 @@ import { type MapMarker } from "../../../netlify/core/database/types";
 import { api } from "../../database/api";
 
 export interface MapMarkersState {
-    markers: MapMarker[],
+    markers: MapMarker[];
 }
 
 export const useMapMarkersStore = defineStore('map-markers', {

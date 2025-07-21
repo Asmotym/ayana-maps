@@ -28,7 +28,7 @@ app.use(router)
 app.use(vuetify)
 app.use(logger)
 app.use(i18n)
-app.use(store);
+app.use(store)
 app.mount('#app')
 
 logger.info('Application started')

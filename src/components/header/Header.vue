@@ -28,24 +28,22 @@ import DiscordAuth from './DiscordAuth.vue';
 import LanguageSwitcher from '../header/LanguageSwitcher.vue';
 import { Routes } from '../../router';
 import type { DiscordUser } from '../../../netlify/core/discord/client';
-import { isUserAuthorized } from '../../database/queries/users.query';
 import { UserRights } from '../../../netlify/core/database/types';
 import { DiscordService } from '../../services/discord.service';
-
-interface HeaderProps {
-    user: DiscordUser | null;
-}
+import { store } from '../../store/index.store'
 
 const { t } = useI18n();
-const props = defineProps<HeaderProps>();
-const user = computed<DiscordUser | null>(() => props.user);
+const discordService = DiscordService.getInstance();
+const user = computed<DiscordUser | null>(() => {
+  return discordService.user.value;
+});
 const isUserLoggedIn = computed(() => user.value !== null);
 const userHasTestingGroundRights = ref(false);
 
 onMounted(async () => {
     const user = DiscordService.getInstance().getUser();
     if (!user) return;
-    userHasTestingGroundRights.value = await isUserAuthorized(user.id, UserRights.TESTING_GROUND);
+    userHasTestingGroundRights.value = await store.user().isUserAuthorized(user.id, UserRights.TESTING_GROUND);
 });
 </script>
 
