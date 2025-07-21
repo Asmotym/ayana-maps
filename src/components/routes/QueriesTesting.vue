@@ -4,17 +4,7 @@
         <template #title>{{ t('testing_ground.title') }}</template>
         <!-- Query Controls -->
         <v-card-text class="queries-testing__contentbg-surface-light pa-4">
-            <h3>{{ t('testing_ground.database_queries.title') }}</h3>
-            <div class="queries-testing__content__buttons mt-2">
-                <v-btn class="me-2" :text="t('testing_ground.database_queries.get_version')"
-                    @click="performQuery('version')" variant="outlined" color="primary"
-                    :loading="loadingQuery === 'version'" :disabled="loadingQuery === 'version'" />
-                <v-btn class="me-2" :text="t('testing_ground.database_queries.list_tables')"
-                    @click="performQuery('tables')" variant="outlined" color="primary"
-                    :loading="loadingQuery === 'tables'" :disabled="loadingQuery === 'tables'" />
-            </div>
-
-            <h3 class="mt-4">{{ t('testing_ground.users_queries') }}</h3>
+            <h3 class="mt-4">{{ t('testing_ground.users_queries.title') }}</h3>
             <div class="queries-testing__content__buttons mt-2">
                 <v-btn class="me-2" :text="t('testing_ground.users_queries.get_current_user')"
                     @click="performQuery('get_current_user')" variant="outlined" color="primary"
@@ -47,7 +37,6 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-// import { getDatabaseVersion, getTables } from '../../database/api'
 import { DiscordService } from '../../services/discord.service'
 import { useI18n } from 'vue-i18n'
 import { store } from '../../store/index.store'
@@ -62,12 +51,6 @@ const loadingQuery = ref<string | null>(null)
 async function performQuery(queryType: string) {
     loadingQuery.value = queryType
     switch (queryType) {
-        case 'version':
-            // dbData.value = await getDatabaseVersion()
-            break
-        case 'tables':
-            // dbData.value = await getTables()
-            break
         case 'get_current_user':
             dbData.value = await store.user().getUser(DiscordService.getInstance().getUser()?.id as string)
             break

@@ -9,8 +9,9 @@ export interface MarkerCategoriesState {
 export const useMarkerCategoriesStore = defineStore('marker-categories', {
     state: (): MarkerCategoriesState => ({ markerCategories: [] }),
     actions: {
-        async getAll(): Promise<void> {
+        async getAll(): Promise<MarkerCategory[]> {
             this.markerCategories = await api.markerCategories.getMarkerCategories();
+            return this.markerCategories;
         },
         async insertMarkerCategory(category: MarkerCategory): Promise<void> {
             await api.markerCategories.insertMarkerCategory(category);

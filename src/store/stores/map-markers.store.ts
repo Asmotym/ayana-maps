@@ -9,8 +9,9 @@ export interface MapMarkersState {
 export const useMapMarkersStore = defineStore('map-markers', {
     state: (): MapMarkersState => ({ markers: [] }),
     actions: {
-        async getAll(): Promise<void> {
+        async getAll(): Promise<MapMarker[]> {
             this.markers = await api.mapMarkers.getMapMarkers();
+            return this.markers;
         },
         async insert(marker: MapMarker): Promise<void> {
             await api.mapMarkers.insertMapMarker(marker);

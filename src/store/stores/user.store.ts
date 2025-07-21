@@ -10,8 +10,9 @@ export interface UserState {
 export const useUserStore = defineStore('user', {
     state: (): UserState => ({ user: null }),
     actions: {
-        async getUser(discordUserId: string): Promise<void> {
+        async getUser(discordUserId: string): Promise<DiscordUser> {
             this.user = await api.user.getUser(discordUserId);
+            return this.user;
         },
         async isUserAuthorized(discordUserId: string, right: UserRights = UserRights.UPDATE) {
             return await api.user.isUserAuthorized(discordUserId, right);
