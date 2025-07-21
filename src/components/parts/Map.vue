@@ -11,7 +11,7 @@
         @update:active="dialogAddMarkerActive = $event" />
     </l-map>
     <!-- Map Filters -->
-    <MapFilters />
+    <MapFilters ref="mapFilters" />
   </v-container>
 </template>
 
@@ -44,6 +44,7 @@ const lastNewMarkerPosition = ref<L.LatLng | null>(null);
 const userAuthorized = ref<boolean>(false);
 const logger = useLogger();
 const markersRefs = useTemplateRef('markersComponents')
+const mapFilters = useTemplateRef('mapFilters')
 
 async function loadMapDimensions(): Promise<void> {
   return new Promise<void>((resolve) => {
@@ -59,10 +60,13 @@ async function loadMapDimensions(): Promise<void> {
 }
 
 function handleClick(event: L.LeafletMouseEvent) {
-  // check if a marker popup is active
+  // check if any of the following elements are valid:
+  // - any marker popup are active
+  // - map filters open
   // if so, we don't show the new marker popup
   const hasActivePopup = markersRefs.value?.filter((markerRef) => markerRef?.isPopupActive === true);
-  if (hasActivePopup && hasActivePopup?.length > 0) return;
+  const hasFiltersOpen = mapFilters.value?.isOpen;
+  if ((hasActivePopup && hasActivePopup?.length > 0) || hasFiltersOpen) return;
 
   // show the new marker popup
   dialogAddMarkerActive.value = true;
