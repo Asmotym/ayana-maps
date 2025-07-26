@@ -13,11 +13,26 @@
                             <span>Filters</span>
                         </v-container>
                     </v-card-title>
-                    <v-card-text>Nothing to see here...</v-card-text>
-                    <v-checkbox label="Test A" />
-                    <v-checkbox label="Test B" />
-                    <v-checkbox label="Test C" />
-                    <v-checkbox label="Test D" />
+
+                    <v-expansion-panels variant="accordion">
+                        <v-expansion-panel
+                            v-for="section in mapFiltersStore.filters"
+                            :title="section.title"
+                        >
+                            <v-expansion-panel-text>
+                                <div v-for="items in section.items">
+                                    <v-checkbox v-if="items.type === 'checkbox'" v-for="category in items.data" v-model="category.active" :label="category.name" density="compact" />
+                                </div>
+                            </v-expansion-panel-text>
+                        </v-expansion-panel>
+                    </v-expansion-panels>
+
+                    <!-- <div v-for="section in mapFiltersStore.filters">
+                        <h4>{{ section.title }}</h4>
+                        
+                    </div> -->
+
+                    <!-- <v-checkbox v-for="category in mapFiltersStore?.filters.categories" v-model="category.active" :label="category.name" density="compact" /> -->
                 </v-card>
             </v-container>
         </v-speed-dial>
@@ -25,12 +40,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineExpose } from 'vue';
+import { ref, defineExpose, onMounted } from 'vue';
+import { store } from '../../store/index.store';
+import type { MapFiltersStore } from '../../store/stores/map-filters.store';
 
-const loading = ref<boolean>(false);
+// Component state
+const loading = ref<boolean>(true);
 const isOpen = ref<boolean>(false);
+const mapFiltersStore: MapFiltersStore = store.mapFilters();
 
 defineExpose({
     isOpen,
+});
+
+onMounted(async () => {
+    await mapFiltersStore.initialize();
+
+    if (mapFiltersStore.initialized) {
+        loading.value = false;
+    }
 })
 </script>

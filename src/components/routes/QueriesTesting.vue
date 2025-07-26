@@ -28,8 +28,7 @@
             <!-- Results Display -->
             <div v-if="dbData" class="queries-testing__results mt-4">
                 <h3 class="queries-testing__results__title">{{ t('testing_ground.query_results') }}</h3>
-                <pre class="queries-testing__results__display pa-4 mt-2 bg-surface-light">{{ JSON.stringify(dbData, null, 2) }}
-        </pre>
+                <pre class="queries-testing__results__display pa-4 mt-2 bg-surface-light">{{ JSON.stringify(dbData, null, 2) }}</pre>
             </div>
         </v-card-text>
     </v-card>

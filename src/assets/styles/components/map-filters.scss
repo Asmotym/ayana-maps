@@ -5,4 +5,8 @@
     top: calc(var(--v-layout-top) + 10px) !important;
     max-width: 250px !important;
     width: auto !important;
+
+    &__filters {
+        width: 200px !important;
+    }
 }
