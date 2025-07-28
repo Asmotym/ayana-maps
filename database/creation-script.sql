@@ -15,7 +15,8 @@ CREATE TABLE map_markers (
   label VARCHAR(255),
   description TEXT,
   category_id INTEGER REFERENCES marker_categories(id),
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  discord_user_id VARCHAR(255) REFERENCES users(discord_user_id),
 );
 
 -- Marker Categories to store categories of markers
@@ -28,7 +29,8 @@ CREATE TABLE marker_categories (
 );
 
 -- Optional: Add an index for better performance on foreign key lookups
-CREATE INDEX IF NOT EXISTS idx_map_markers_category_id ON map_markers(category_id); 
+CREATE INDEX IF NOT EXISTS idx_map_markers_category_id ON map_markers(category_id);
+CREATE INDEX IF NOT EXISTS idx_map_markers_discord_user_id ON map_markers(discord_user_id);
 
 -- Create all marker categories
 INSERT INTO map_markers VALUES ('1', 'Ville');
