@@ -7,32 +7,32 @@
     
             <v-skeleton-loader v-if="loading" type="paragraph" />
             <v-container v-else class="map-filters__filters pa-0">
-                <v-card>
+                <v-card elevation="16">
                     <v-card-title>
                         <v-container class="pa-0 ma-0">
                             <span>Filters</span>
                         </v-container>
                     </v-card-title>
 
-                    <v-expansion-panels variant="accordion">
+                    <v-expansion-panels variant="accordion" elevation="24">
                         <v-expansion-panel
                             v-for="section in mapFiltersStore.filters"
                             :title="section.title"
                         >
                             <v-expansion-panel-text>
-                                <div v-for="items in section.items">
-                                    <v-checkbox v-if="items.type === 'checkbox'" v-for="category in items.data" v-model="category.active" :label="category.name" density="compact" />
+                                <div v-for="items in section.items" :class="['filter__items', 'filter__items--' + items.type]">
+                                    <v-checkbox
+                                        v-if="items.type === 'checkbox'"
+                                        v-for="(category, index) in items.data"
+                                        v-model="category.active"
+                                        :label="category.name"
+                                        density="compact"
+                                        :class="['filter__items__item', 'filter__items__item--' + index]"
+                                    />
                                 </div>
                             </v-expansion-panel-text>
                         </v-expansion-panel>
                     </v-expansion-panels>
-
-                    <!-- <div v-for="section in mapFiltersStore.filters">
-                        <h4>{{ section.title }}</h4>
-                        
-                    </div> -->
-
-                    <!-- <v-checkbox v-for="category in mapFiltersStore?.filters.categories" v-model="category.active" :label="category.name" density="compact" /> -->
                 </v-card>
             </v-container>
         </v-speed-dial>

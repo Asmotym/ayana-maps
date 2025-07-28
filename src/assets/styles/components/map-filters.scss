@@ -8,5 +8,13 @@
 
     &__filters {
         width: 200px !important;
+
+        .filter__items {
+            &--checkbox {
+                .filter__items__item {
+                    .v-input__details { display: none; }
+                }
+            }
+        }
     }
 }
