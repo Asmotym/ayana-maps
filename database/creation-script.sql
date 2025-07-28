@@ -40,3 +40,16 @@ INSERT INTO marker_categories (id, name) VALUES (4, 'Forteresse');
 INSERT INTO marker_categories (id, name) VALUES (5, 'Ruine');
 INSERT INTO marker_categories (id, name) VALUES (6, 'Mine');
 INSERT INTO marker_categories (id, name) VALUES (7, 'Caverne');
+
+-- Create all known map markers
+INSERT INTO map_markers (x, y, label, description, created_at, category_id) VALUES
+(468, 1687, 'Jemari', 'Lieux d''accueil pour les héros', '2025-06-30 18:30:30.774295', 2),
+(907.5, 1779.25, 'Taurenga', 'Ville portuaire (la plus grande).
+Lieux d''accueil de beaucoup d''aventurier, grace au système de carte d''aventurier d''Eva', '2025-06-30 18:31:09.302915', 1),
+(966.5, 1357.5, 'Atlas', 'Capitale', '2025-06-30 18:32:27.737185', 3),
+(1195, 1484, 'Taovana', 'Ville des nains', '2025-06-30 18:32:50.860054', 1),
+(556, 1460.5, 'Cryf', 'Village de fermiers. Également présente un village caché pour entraîner les mages.', '2025-06-30 18:34:42.995101', 2),
+(734, 1404, 'Manako', 'Ville de passage.', '2025-06-30 18:35:08.083368', 2),
+(1273.5, 1598.75, 'Mako Blokou', 'Village caché, lieu de naissance de la Graillomancie.', '2025-06-30 18:35:39.156449', 2),
+(693.5, 1581, 'Rhézal''Hem', 'Village caché, lieu de naissance de la Blobitomancie', '2025-06-30 18:37:38.249864', 2),
+(507, 1112.5, 'Ancienne Capitale', 'Ancienne Capitale', '2025-06-30 23:21:25.580009', 3);
