@@ -1,7 +1,7 @@
+import type { DiscordUser } from '../../netlify/core/types/discord.types';
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import { store } from '../store/index.store'
 import { DiscordService } from '../services/discord.service'
-import type { DiscordUser } from '../../netlify/core/discord/client';
 
 export enum Routes {
   Home = 'Home',

@@ -22,13 +22,13 @@
 </template>
 
 <script setup lang="ts">
+import type { DiscordUser } from '../../../netlify/core/types/discord.types';
+import { UserRights } from '../../../netlify/core/types/enum.types';
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import DiscordAuth from './DiscordAuth.vue';
 import LanguageSwitcher from '../header/LanguageSwitcher.vue';
 import { Routes } from '../../router';
-import type { DiscordUser } from '../../../netlify/core/discord/client';
-import { UserRights } from '../../../netlify/core/database/types';
 import { DiscordService } from '../../services/discord.service';
 import { store } from '../../store/index.store'
 

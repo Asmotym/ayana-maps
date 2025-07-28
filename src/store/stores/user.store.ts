@@ -1,14 +1,14 @@
+import type { DiscordUser } from "../../../netlify/core/types/discord.types";
 import { defineStore } from "pinia";
-import { type DiscordUser } from "../../../netlify/core/discord/client";
 import { api } from "../../database/api";
-import { UserRights } from "../../../netlify/core/database/types";
+import { UserRights } from "../../../netlify/core/types/enum.types";
 
 export interface UserState {
-    user: null | DiscordUser;
+    user: DiscordUser;
 }
 
 export const useUserStore = defineStore('user', {
-    state: (): UserState => ({ user: null }),
+    state: (): UserState => ({ user: {} as DiscordUser }),
     actions: {
         async getUser(discordUserId: string): Promise<DiscordUser> {
             this.user = await api.user.getUser(discordUserId);

@@ -1,37 +1,37 @@
 import type { HandlerEvent } from "@netlify/functions";
 import { sql } from "..";
-import type { MarkerCategory } from "../types";
+import type { DatabaseMarkerCategory } from "../../types/database.types";
 import { createLogger } from "../../utils/logger";
 
 const logger = createLogger('Marker Categories');
 
-export async function getMarkerCategories(): Promise<MarkerCategory[]> {
+export async function getMarkerCategories(): Promise<DatabaseMarkerCategory[]> {
     const result = await sql`SELECT * FROM marker_categories`;
     logger.info(`Fetched all marker categories <count: ${logger.highlight(result.length.toString())}>`);
-    return result as MarkerCategory[];
+    return result as DatabaseMarkerCategory[];
 }
 
-export async function insertMarkerCategory(category: MarkerCategory): Promise<MarkerCategory> {
+export async function insertMarkerCategory(category: DatabaseMarkerCategory): Promise<DatabaseMarkerCategory> {
     const result = await sql`INSERT INTO marker_categories (name) VALUES (${category.name})`;
     logger.info(`Inserted marker category <category: ${logger.highlight(category.id?.toString() || 'unknown')}>`);
-    return result[0] as MarkerCategory;
+    return result[0] as DatabaseMarkerCategory;
 }
 
-export async function updateMarkerCategory(category: MarkerCategory): Promise<MarkerCategory> {
+export async function updateMarkerCategory(category: DatabaseMarkerCategory): Promise<DatabaseMarkerCategory> {
     const result = await sql`UPDATE marker_categories SET name = ${category.name} WHERE id = ${category.id}`;
     logger.info(`Updated marker category <category: ${logger.highlight(category.id?.toString() || 'unknown')}>`);
-    return result[0] as MarkerCategory;
+    return result[0] as DatabaseMarkerCategory;
 }
 
-export async function getMarkerCategory(id: number): Promise<MarkerCategory> {
+export async function getMarkerCategory(id: number): Promise<DatabaseMarkerCategory> {
     const result = await sql`SELECT * FROM marker_categories WHERE id = ${id}`;
     logger.info(`Fetched marker category <category: ${logger.highlight(id.toString())}>`);
-    return result[0] as MarkerCategory;
+    return result[0] as DatabaseMarkerCategory;
 }
 
 export async function markerCategoriesQuery(event: HandlerEvent) {
     const body = JSON.parse(event.body || '{}');
-    const data = body.data as { action: string, category?: MarkerCategory, id?: number } || undefined;
+    const data = body.data as { action: string, category?: DatabaseMarkerCategory, id?: number } || undefined;
 
     logger.info(`Querying <action: ${logger.highlight(data?.action || 'undefined')}> <category: ${logger.highlight(data?.category?.id?.toString() || 'undefined')}> <id: ${logger.highlight(data?.id?.toString() || 'undefined')}>`);
 
@@ -43,9 +43,9 @@ export async function markerCategoriesQuery(event: HandlerEvent) {
         case 'getAll':
             return await getMarkerCategories();
         case 'insert':
-            return await insertMarkerCategory(data.category as MarkerCategory);
+            return await insertMarkerCategory(data.category as DatabaseMarkerCategory);
         case 'update':
-            return await updateMarkerCategory(data.category as MarkerCategory);
+            return await updateMarkerCategory(data.category as DatabaseMarkerCategory);
         case 'get':
             return await getMarkerCategory(data.id as number);
         default:

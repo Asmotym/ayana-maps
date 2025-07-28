@@ -6,27 +6,27 @@
 </template>
 
 <script setup lang="ts">
-import type { MapMarker } from '../../../../netlify/core/database/types';
+import type { DatabaseMapMarker } from '../../../../netlify/core/types/database.types';
 import { computed, defineEmits, defineProps } from 'vue';
 import MarkerActionDialog from './actions/MarkerActionDialog.vue';
 import MarkerActionRemove from './actions/MarkerActionRemove.vue';
 
 const props = defineProps<{
-    marker: MapMarker;
+    marker: DatabaseMapMarker;
     userAuthorized: boolean;
 }>();
 
-const marker = computed<MapMarker>(() => props.marker);
+const marker = computed<DatabaseMapMarker>(() => props.marker);
 const emit = defineEmits<{
-    'marker:removed': [marker: MapMarker];
-    'marker:updated': [marker: MapMarker];
+    'marker:removed': [marker: DatabaseMapMarker];
+    'marker:updated': [marker: DatabaseMapMarker];
 }>();
 
-function handleMarkerRemoved(marker: MapMarker) {
+function handleMarkerRemoved(marker: DatabaseMapMarker) {
     emit('marker:removed', marker);
 }
 
-function handleMarkerUpdated(marker: MapMarker) {
+function handleMarkerUpdated(marker: DatabaseMapMarker) {
     emit('marker:updated', marker);
 }
 </script>

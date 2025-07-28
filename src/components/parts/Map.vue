@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, useTemplateRef } from 'vue';
+import { ref, useTemplateRef } from 'vue';
 import { LMap, LImageOverlay } from '@vue-leaflet/vue-leaflet';
 import * as L from 'leaflet';
 import mapUrl from '../../assets/map.jpg';

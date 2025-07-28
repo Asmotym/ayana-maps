@@ -52,7 +52,7 @@
 </template>
 
 <script setup lang="ts">
-import type { MapMarker, MarkerCategory } from '../../../../../netlify/core/database/types';
+import type { DatabaseMapMarker, DatabaseMarkerCategory } from '../../../../../netlify/core/types/database.types';
 import { computed, defineProps, onMounted, ref, watch } from 'vue';
 import { formatHumanDate } from '../../../../utils/date';
 import { getMarkerCategories } from '../../../../database/queries/marker-categories.query';
@@ -65,21 +65,21 @@ const { t } = useI18n();
 const logger = useLogger();
 
 const props = defineProps<{
-    marker: MapMarker;
+    marker: DatabaseMapMarker;
     userAuthorized: boolean;
 }>();
 
-const marker = computed<MapMarker>(() => props.marker);
+const marker = computed<DatabaseMapMarker>(() => props.marker);
 const userAuthorized = computed<boolean>(() => props.userAuthorized);
 const isEditing = ref<boolean>(false);
 const isSaving = ref<boolean>(false);
-const editableMarker = ref<MapMarker | null>(null);
+const editableMarker = ref<DatabaseMapMarker | null>(null);
 const emit = defineEmits<{
-    'marker:updated': [marker: MapMarker];
+    'marker:updated': [marker: DatabaseMapMarker];
 }>();
 
-const categories = ref<MarkerCategory[]>([]);
-const previousMarker = ref<MapMarker | null>(null);
+const categories = ref<DatabaseMarkerCategory[]>([]);
+const previousMarker = ref<DatabaseMapMarker | null>(null);
 
 onMounted(async () => {
     categories.value = await getMarkerCategories();
@@ -102,7 +102,7 @@ watch(isEditing, async (newValue) => {
         } else if (previousMarker.value) {
             // Changes were not saved, revert to previous state
             logger.info(`Reverting to previous state for marker ${previousMarker.value.id || 'unknown'}`);
-            emit('marker:updated', previousMarker.value as MapMarker);
+            emit('marker:updated', previousMarker.value as DatabaseMapMarker);
             editableMarker.value = null;
         }
     }
@@ -114,8 +114,8 @@ async function handleEdit() {
     if (isEditing.value) {
         // Currently editing, so save changes
         isSaving.value = true;
-        await store.mapMarkers().update(editableMarker.value as MapMarker);
-        emit('marker:updated', editableMarker.value as MapMarker);
+        await store.mapMarkers().update(editableMarker.value as DatabaseMapMarker);
+        emit('marker:updated', editableMarker.value as DatabaseMapMarker);
         isSaving.value = false;
         isEditing.value = false;
     } else {

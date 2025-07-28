@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import { LMarker, LTooltip, LPopup } from '@vue-leaflet/vue-leaflet';
-import type { MapMarker } from '../../../netlify/core/database/types';
+import type { DatabaseMapMarker } from '../../../netlify/core/types/database.types';
 import { computed, defineProps, ref, defineExpose, onMounted } from 'vue';
 import MarkerActions from './marker/MarkerActions.vue';
 import { useLogger } from 'vue-logger-plugin';
@@ -41,15 +41,15 @@ import * as L from 'leaflet';
 const logger = useLogger();
 
 const props = defineProps<{
-    marker: MapMarker;
+    marker: DatabaseMapMarker;
     userAuthorized: boolean;
 }>();
 
-const marker = computed<MapMarker>(() => props.marker);
+const marker = computed<DatabaseMapMarker>(() => props.marker);
 const popupRef = ref<typeof LPopup | null>(null);
 const emit = defineEmits<{
-    'marker:removed': [marker: MapMarker];
-    'marker:updated': [marker: MapMarker];
+    'marker:removed': [marker: DatabaseMapMarker];
+    'marker:updated': [marker: DatabaseMapMarker];
 }>();
 const isPopupActive = ref<boolean>(false);
 
@@ -62,12 +62,12 @@ function getPopup(): L.Popup {
     return popupRef.value?.leafletObject as L.Popup;
 }
 
-function handleMarkerRemoved(marker: MapMarker) {
+function handleMarkerRemoved(marker: DatabaseMapMarker) {
     closePopup();
     emit('marker:removed', marker);
 }
 
-function handleMarkerUpdated(marker: MapMarker) {
+function handleMarkerUpdated(marker: DatabaseMapMarker) {
     emit('marker:updated', marker);
 }
 

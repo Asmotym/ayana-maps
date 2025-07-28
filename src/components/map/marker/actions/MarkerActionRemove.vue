@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import type { MapMarker } from '../../../../../netlify/core/database/types';
+import type { DatabaseMapMarker } from '../../../../../netlify/core/types/database.types';
 import { computed, defineProps, ref, type Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { store } from '../../../../store/index.store';
@@ -35,14 +35,14 @@ import { store } from '../../../../store/index.store';
 const { t } = useI18n();
 
 const props = defineProps<{
-    marker: MapMarker;
+    marker: DatabaseMapMarker;
     userAuthorized: boolean;
 }>();
 
-const marker = computed<MapMarker>(() => props.marker);
+const marker = computed<DatabaseMapMarker>(() => props.marker);
 const userAuthorized = computed<boolean>(() => props.userAuthorized);
 const emit = defineEmits<{
-    'marker:removed': [marker: MapMarker];
+    'marker:removed': [marker: DatabaseMapMarker];
 }>();
 const isDeleting = ref<boolean>(false);
 

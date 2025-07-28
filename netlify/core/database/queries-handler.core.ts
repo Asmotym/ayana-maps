@@ -1,6 +1,4 @@
 import type { HandlerEvent, HandlerResponse } from "@netlify/functions";
-import { tablesQuery } from "./tables/tables.table";
-import { versionQuery } from "./tables/version.table";
 import { usersQuery } from "./tables/users.table";
 import { mapMarkersQuery } from "./tables/map_markers.table";
 import { markerCategoriesQuery } from "./tables/marker_categories.table";
@@ -41,10 +39,6 @@ export class QueryHandler {
 
     protected async getQueryResult() {
         switch (this.queryType) {
-            case 'version':
-                return await versionQuery();
-            case 'tables':
-                return await tablesQuery();
             case 'users':
                 return await usersQuery(this.event);
             case 'map_markers':

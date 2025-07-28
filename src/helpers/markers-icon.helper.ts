@@ -1,5 +1,6 @@
+import type { DatabaseMapMarker } from "../../netlify/core/types/database.types";
+import { MarkerCategoryMapping } from "../../netlify/core/types/enum.types";
 import L from "leaflet";
-import { MarkerCategoryMapping, type MapMarker } from '../../netlify/core/database/types';
 
 type SizeExpression = { size: L.PointExpression, anchor: L.PointExpression };
 
@@ -64,7 +65,7 @@ const markerCavern = L.icon({
     iconAnchor: sizeSmall.anchor,
 })
 
-export function getMarkerIconFromMarker(marker: MapMarker): L.Icon {
+export function getMarkerIconFromMarker(marker: DatabaseMapMarker): L.Icon {
     switch (marker.category_id) {
         case MarkerCategoryMapping.City:
             return markerCity;

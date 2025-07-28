@@ -1,5 +1,6 @@
+import type { DiscordAuth } from "../types/discord.types";
 import { HandlerEvent, HandlerResponse } from "@netlify/functions";
-import { DiscordAuth, DiscordClient } from "./client";
+import { DiscordClient } from "./client";
 import { getUser, insertUser, updateUser } from "../database/tables/users.table";
 import { createLogger } from "../utils/logger";
 

@@ -1,20 +1,7 @@
 import { createLogger } from "../utils/logger";
+import type { DiscordAuth, DiscordUser } from '../types/discord.types'
 
 const logger = createLogger('DiscordClient');
-
-export type DiscordAuth = {
-    tokenType: string;
-    accessToken: string;
-    expiresIn: number;
-    scope: string;
-    state: string;
-}
-
-export interface DiscordUser {
-    id: string;
-    username: string;
-    avatar: string;
-}
 
 export class DiscordClient {
     protected baseUrl: string = "https://discord.com/api/v10";

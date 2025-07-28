@@ -1,28 +1,28 @@
 import type { HandlerEvent } from "@netlify/functions";
-import type { DiscordUser } from "../../discord/client";
-import type { User } from "../types";
-import { UserRights } from "../types";
+import type { DiscordUser } from "../../types/discord.types";
+import type { DatabaseUser } from "../../types/database.types";
+import { UserRights } from "../../types/enum.types";
 import { sql } from "..";
 import { createLogger } from "../../utils/logger";
 
 const logger = createLogger('Users');
 
-export async function getUser(id: string): Promise<User | undefined> {
+export async function getUser(id: string): Promise<DatabaseUser | undefined> {
     const result = await sql`SELECT discord_user_id, username, avatar FROM users WHERE discord_user_id = ${id}`;
     logger.info(`Fetched user <user: ${logger.highlight(id)}>`);
-    return result[0] as User || undefined;
+    return result[0] as DatabaseUser || undefined;
 }
 
-export async function updateUser(id: string, data: User): Promise<User> {
+export async function updateUser(id: string, data: DatabaseUser): Promise<DatabaseUser> {
     const result = await sql`UPDATE users SET username = ${data.username}, avatar = ${data.avatar} WHERE discord_user_id = ${id}`;
     logger.info(`Updated user <user: ${logger.highlight(id)}>`);
-    return result[0] as User;
+    return result[0] as DatabaseUser;
 }
 
-export async function insertUser(data: User): Promise<User> {
-    const result = await sql`INSERT INTO users (discord_user_id, username, avatar) VALUES (${data.discord_user_id}, ${data.username}, ${data.avatar})`;
+export async function insertUser(data: DatabaseUser): Promise<DatabaseUser> {
+    const result = await sql`INSERT INTO users (discord_user_id, username, avatar) VALUES (${data.discord_user_id}, ${data.username}, ${data.avatar}) RETURNING discord_user_id, username, avatar`;
     logger.success(`Inserted user <user: ${logger.highlight(data.discord_user_id || 'unknown')}>`);
-    return result[0] as User;
+    return result[0] as DatabaseUser;
 }
 
 export async function isUserAuthorized(id: string, right: UserRights): Promise<boolean> {
@@ -48,7 +48,7 @@ export async function isUserAuthorized(id: string, right: UserRights): Promise<b
 
 export async function usersQuery(event: HandlerEvent): Promise<Record<string, any>> {
     const body = JSON.parse(event.body || '{}');
-    const data = body.data as DiscordUser & { action: string, data?: User, right?: UserRights } || undefined;
+    const data = body.data as DiscordUser & { action: string, data?: DatabaseUser, right?: UserRights } || undefined;
     const action = data?.action;
     const userId = data?.id;
     const userRight = data?.right;
@@ -63,9 +63,9 @@ export async function usersQuery(event: HandlerEvent): Promise<Record<string, an
         case 'get':
             return await getUser(data.id) || {};
         case 'update':
-            return await updateUser(data.id, data.data as User);
+            return await updateUser(data.id, data.data as DatabaseUser);
         case 'insert':
-            return await insertUser(data.data as User);
+            return await insertUser(data.data as DatabaseUser);
         case 'isAuthorized':
             if (!userRight) {
                 throw new Error('Right parameter is required for isAuthorized action');

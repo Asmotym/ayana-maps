@@ -30,7 +30,7 @@
 <script setup lang="ts">
 import { computed, defineProps, defineEmits, onMounted, ref } from 'vue';
 import type * as L from 'leaflet';
-import type { MapMarker } from '../../../netlify/core/database/types';
+import type { DatabaseMapMarker } from '../../../netlify/core/types/database.types';
 import { useLogger } from 'vue-logger-plugin';
 import { store } from '../../store/index.store'
 import { useI18n } from 'vue-i18n';
@@ -47,7 +47,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
     'update:active': [value: boolean];
-    'marker:added': [marker: MapMarker];
+    'marker:added': [marker: DatabaseMapMarker];
 }>();
 
 const userAuthorized = computed<boolean>(() => props.userAuthorized);
@@ -99,14 +99,14 @@ function resetForm() {
 }
 
 async function handleSubmit() {
-    const marker: MapMarker = {
+    const marker: DatabaseMapMarker = {
         label: label.value,
         description: description.value,
         created_at: new Date(),
         x: props.position?.lat || 0,
         y: props.position?.lng || 0,
         category_id: category.value || null,
-    } as MapMarker;
+    } as DatabaseMapMarker;
 
     logger.info('Adding new marker', { marker, category: category.value });
     await store.mapMarkers().insert(marker);

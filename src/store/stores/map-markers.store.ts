@@ -1,33 +1,33 @@
 import { defineStore } from "pinia";
-import { type MapMarker } from "../../../netlify/core/database/types";
 import { api } from "../../database/api";
 import { store } from "../index.store";
-import { MapFiltersSection, type FiltersSection, type MarkerCategoryFilter } from "./map-filters.store";
+import { MapFiltersSection, type MarkerCategoryFilter } from "./map-filters.store";
+import type { DatabaseMapMarker } from "../../../netlify/core/types/database.types";
 
 export interface MapMarkersState {
-    markers: MapMarker[];
-    filteredMarkers: MapMarker[];
+    markers: DatabaseMapMarker[];
+    filteredMarkers: DatabaseMapMarker[];
 }
 
 export const useMapMarkersStore = defineStore('map-markers', {
     state: (): MapMarkersState => ({ markers: [], filteredMarkers: [] }),
     actions: {
-        async getAll(): Promise<MapMarker[]> {
+        async getAll(): Promise<DatabaseMapMarker[]> {
             // get all markers
             this.markers = await api.mapMarkers.getMapMarkers();
             // update filtered marker
             await this.updateFilteredMarkers();
             return this.markers;
         },
-        async insert(marker: MapMarker): Promise<void> {
+        async insert(marker: DatabaseMapMarker): Promise<void> {
             await api.mapMarkers.insertMapMarker(marker);
             await this.getAll();
         },
-        async delete(marker: MapMarker): Promise<void> {
+        async delete(marker: DatabaseMapMarker): Promise<void> {
             await api.mapMarkers.deleteMapMarker(marker);
             await this.getAll();
         },
-        async update(marker: MapMarker): Promise<void> {
+        async update(marker: DatabaseMapMarker): Promise<void> {
             await api.mapMarkers.updateMapMarker(marker);
             await this.getAll();
         },
@@ -37,7 +37,7 @@ export const useMapMarkersStore = defineStore('map-markers', {
             const sectionIndex = mapFiltersStore.findFiltersSectionIndex(MapFiltersSection.CATEGORIES);
             const categoriesFiltersSection = mapFiltersStore.filters[sectionIndex].items[0].data as MarkerCategoryFilter[];
             const filteredMarkers = this.markers.filter(
-                (marker) => {
+                (marker: DatabaseMapMarker) => {
                     const categoryFilterIndex = categoriesFiltersSection.findIndex(
                         (category) => category.name === marker.category_name
                     )
