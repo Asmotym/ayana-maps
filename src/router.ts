@@ -12,7 +12,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: Routes.Home,
-    component: () => import('./components/routes/Home.vue'),
+    component: () => import('./core/layouts/Home.vue'),
     beforeEnter: async () => {
       // fetch connected user in the store if possible
       const discordService = DiscordService.getInstance();
@@ -25,7 +25,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/testing-ground',
     name: Routes.TestingGround,
-    component: () => import('./components/routes/QueriesTesting.vue')
+    component: () => import('./core/layouts/QueriesTesting.vue')
   }
 ]
 

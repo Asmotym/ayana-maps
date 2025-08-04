@@ -36,9 +36,9 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { DiscordService } from '../../services/discord.service'
+import { DiscordService } from '../services/discord.service'
 import { useI18n } from 'vue-i18n'
-import { store } from '../../store/index.store'
+import { store } from '../../core/store/index.store'
 
 const { t } = useI18n()
 
