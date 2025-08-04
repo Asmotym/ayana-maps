@@ -31,11 +31,11 @@
 
 <script setup lang="ts">
 import { LMarker, LTooltip, LPopup } from '@vue-leaflet/vue-leaflet';
-import type { DatabaseMapMarker } from '../../../netlify/core/types/database.types';
+import type { DatabaseMapMarker } from '../../../../netlify/core/types/database.types';
 import { computed, defineProps, ref, defineExpose, onMounted } from 'vue';
 import MarkerActions from './marker/MarkerActions.vue';
 import { useLogger } from 'vue-logger-plugin';
-import { getMarkerIconFromMarker } from '../../helpers/markers-icon.helper';
+import { getMarkerIconFromMarker } from '../../../helpers/markers-icon.helper';
 import * as L from 'leaflet';
 
 const logger = useLogger();

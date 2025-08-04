@@ -1,8 +1,8 @@
 import { ref, computed, nextTick, onMounted, onBeforeUnmount, type Ref } from 'vue';
-import mapUrl from '../assets/map.jpg';
+import mapUrl from '../../../assets/map.jpg';
 import { useLogger } from 'vue-logger-plugin';
 import { useUserAuthorization } from './useUserAuthorization';
-import { store } from '../core/store/index.store';
+import { store } from '../../../core/store/index.store';
 
 export function useMapDimensions(
   loading: Ref<boolean, boolean>,

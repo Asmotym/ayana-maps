@@ -1,7 +1,7 @@
 import { ref } from 'vue';
-import { DiscordService } from '../modules/discord-auth/services/discord.service';
-import { isUserAuthorized } from '../database/queries/users.query';
-import { UserRights } from '../../netlify/core/types/enum.types';
+import { DiscordService } from '../../discord-auth/services/discord.service';
+import { isUserAuthorized } from '../../../database/queries/users.query';
+import { UserRights } from '../../../../netlify/core/types/enum.types';
 
 export function useUserAuthorization() {
   const userAuthorized = ref<boolean>(false);

@@ -41,8 +41,8 @@
 
 <script setup lang="ts">
 import { ref, defineExpose, onMounted } from 'vue';
-import { store } from '../../core/store/index.store';
-import type { MapFiltersStore } from '../../core/store/stores/map-filters.store';
+import { store } from '../../../core/store/index.store';
+import type { MapFiltersStore } from '../../../core/store/stores/map-filters.store';
 
 // Component state
 const loading = ref<boolean>(true);

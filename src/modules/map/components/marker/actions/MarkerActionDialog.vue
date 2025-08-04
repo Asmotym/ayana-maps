@@ -52,13 +52,13 @@
 </template>
 
 <script setup lang="ts">
-import type { DatabaseMapMarker, DatabaseMarkerCategory } from '../../../../../netlify/core/types/database.types';
+import type { DatabaseMapMarker, DatabaseMarkerCategory } from '../../../../../../netlify/core/types/database.types';
 import { computed, defineProps, onMounted, ref, watch } from 'vue';
-import { formatHumanDate } from '../../../../core/utils/date';
-import { getMarkerCategories } from '../../../../database/queries/marker-categories.query';
+import { formatHumanDate } from '../../../../../core/utils/date';
+import { getMarkerCategories } from '../../../../../database/queries/marker-categories.query';
 import { useLogger } from 'vue-logger-plugin';
 import { useI18n } from 'vue-i18n';
-import { store } from '../../../../core/store/index.store';
+import { store } from '../../../../../core/store/index.store';
 
 const { t } = useI18n();
 

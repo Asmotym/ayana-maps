@@ -20,14 +20,14 @@
 import { ref, useTemplateRef } from 'vue';
 import { LMap, LImageOverlay } from '@vue-leaflet/vue-leaflet';
 import * as L from 'leaflet';
-import mapUrl from '../../assets/map.jpg';
+import mapUrl from '../../../assets/map.jpg';
 import { VContainer } from 'vuetify/lib/components/index.mjs';
-import Marker from '../map/Marker.vue';
-import MapActionAdd from '../map/MapActionAdd.vue';
-import MapFilters from '../map/MapFilters.vue';
-import { useMapDimensions } from '../../composables/useMapDimensions';
-import { useMapInteraction } from '../../composables/useMapInteraction';
-import { useMapMarkers } from '../../composables/useMapMarkers';
+import Marker from '../components/Marker.vue';
+import MapActionAdd from '../components/MapActionAdd.vue';
+import MapFilters from '../components/MapFilters.vue';
+import { useMapDimensions } from '../composables/useMapDimensions';
+import { useMapInteraction } from '../composables/useMapInteraction';
+import { useMapMarkers } from '../composables/useMapMarkers';
 
 // Component state
 const loading = ref<boolean>(true);
