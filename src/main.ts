@@ -8,9 +8,9 @@ import router from './router'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
-import logger from './plugins/logger.plugin'
+import logger from './core/plugins/logger.plugin'
 import i18n from './modules/language-switcher/plugins/i18n.plugin'
-import store from './plugins/store.plugin'
+import store from './core/plugins/store.plugin'
 
 const vuetify = createVuetify({
     components,
