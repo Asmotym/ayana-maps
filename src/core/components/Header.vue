@@ -26,11 +26,11 @@ import type { DiscordUser } from '../../../netlify/core/types/discord.types';
 import { UserRights } from '../../../netlify/core/types/enum.types';
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import DiscordAuth from './DiscordAuth.vue';
-import LanguageSwitcher from '../header/LanguageSwitcher.vue';
+import DiscordAuth from '../../components/header/DiscordAuth.vue';
+import LanguageSwitcher from '../../components/header/LanguageSwitcher.vue';
 import { Routes } from '../../router';
-import { DiscordService } from '../../core/services/discord.service';
-import { store } from '../../core/store/index.store'
+import { DiscordService } from '../services/discord.service';
+import { store } from '../store/index.store'
 
 const { t } = useI18n();
 const discordService = DiscordService.getInstance();
