@@ -1,7 +1,7 @@
-import type { DiscordUser } from "../../../netlify/core/types/discord.types";
+import type { DiscordUser } from "../../../../netlify/core/types/discord.types";
 import { defineStore } from "pinia";
-import { api } from "../../database/api";
-import { UserRights } from "../../../netlify/core/types/enum.types";
+import { api } from "../../../database/api";
+import { UserRights } from "../../../../netlify/core/types/enum.types";
 
 export interface UserState {
     user: DiscordUser;

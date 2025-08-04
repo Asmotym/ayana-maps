@@ -1,7 +1,7 @@
-import type { DiscordUser } from '../../netlify/core/types/discord.types';
+import type { DiscordUser } from '../netlify/core/types/discord.types';
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
-import { store } from '../store/index.store'
-import { DiscordService } from '../services/discord.service'
+import { store } from './core/store/index.store'
+import { DiscordService } from './core/services/discord.service'
 
 export enum Routes {
   Home = 'Home',
@@ -12,7 +12,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: Routes.Home,
-    component: () => import('../components/routes/Home.vue'),
+    component: () => import('./components/routes/Home.vue'),
     beforeEnter: async () => {
       // fetch connected user in the store if possible
       const discordService = DiscordService.getInstance();
@@ -25,7 +25,7 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/testing-ground',
     name: Routes.TestingGround,
-    component: () => import('../components/routes/QueriesTesting.vue')
+    component: () => import('./components/routes/QueriesTesting.vue')
   }
 ]
 
@@ -34,4 +34,4 @@ const router = createRouter({
   routes
 })
 
-export default router 
+export default router

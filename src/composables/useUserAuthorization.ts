@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { DiscordService } from '../services/discord.service';
+import { DiscordService } from '../core/services/discord.service';
 import { isUserAuthorized } from '../database/queries/users.query';
 import { UserRights } from '../../netlify/core/types/enum.types';
 

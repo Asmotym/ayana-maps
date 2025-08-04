@@ -32,7 +32,7 @@ import { computed, defineProps, defineEmits, onMounted, ref } from 'vue';
 import type * as L from 'leaflet';
 import type { DatabaseMapMarker } from '../../../netlify/core/types/database.types';
 import { useLogger } from 'vue-logger-plugin';
-import { store } from '../../store/index.store'
+import { store } from '../../core/store/index.store'
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();

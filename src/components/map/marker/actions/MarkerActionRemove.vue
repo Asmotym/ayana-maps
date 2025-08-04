@@ -30,7 +30,7 @@
 import type { DatabaseMapMarker } from '../../../../../netlify/core/types/database.types';
 import { computed, defineProps, ref, type Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { store } from '../../../../store/index.store';
+import { store } from '../../../../core/store/index.store';
 
 const { t } = useI18n();
 

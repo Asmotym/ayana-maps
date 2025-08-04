@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
-import { api } from "../../database/api";
+import { api } from "../../../database/api";
 import { store } from "../index.store";
 import { MapFiltersSection, type MarkerCategoryFilter } from "./map-filters.store";
-import type { DatabaseMapMarker } from "../../../netlify/core/types/database.types";
+import type { DatabaseMapMarker } from "../../../../netlify/core/types/database.types";
 
 export interface MapMarkersState {
     markers: DatabaseMapMarker[];

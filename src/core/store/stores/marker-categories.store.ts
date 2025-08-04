@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
-import type { DatabaseMarkerCategory } from "../../../netlify/core/types/database.types";
-import { api } from "../../database/api";
+import type { DatabaseMarkerCategory } from "../../../../netlify/core/types/database.types";
+import { api } from "../../../database/api";
 
 export interface MarkerCategoriesState {
     markerCategories: DatabaseMarkerCategory[];

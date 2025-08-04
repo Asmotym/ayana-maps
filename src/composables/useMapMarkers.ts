@@ -1,5 +1,5 @@
 import { onMounted } from "vue";
-import { store } from "../store/index.store";
+import { store } from "../core/store/index.store";
 
 export function useMapMarkers() {
     const mapMarkerStore = store.mapMarkers();

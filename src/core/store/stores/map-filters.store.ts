@@ -1,5 +1,5 @@
 import { defineStore, type Store, type StoreDefinition } from "pinia";
-import type { DatabaseMarkerCategory } from '../../../netlify/core/types/database.types';
+import type { DatabaseMarkerCategory } from '../../../../netlify/core/types/database.types';
 import { store } from "../index.store";
 
 export interface FiltersSection<D = any> {
