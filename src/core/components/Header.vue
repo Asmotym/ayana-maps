@@ -26,10 +26,10 @@ import type { DiscordUser } from '../../../netlify/core/types/discord.types';
 import { UserRights } from '../../../netlify/core/types/enum.types';
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import DiscordAuth from '../../components/header/DiscordAuth.vue';
+import DiscordAuth from '../../modules/discord-auth/components/DiscordAuth.vue';
 import LanguageSwitcher from '../../components/header/LanguageSwitcher.vue';
 import { Routes } from '../../router';
-import { DiscordService } from '../services/discord.service';
+import { DiscordService } from '../../modules/discord-auth/services/discord.service';
 import { store } from '../store/index.store'
 
 const { t } = useI18n();

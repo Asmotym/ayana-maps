@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { DiscordService } from '../../core/services/discord.service';
+import { DiscordService } from '../../modules/discord-auth/services/discord.service';
 import { computed } from 'vue';
 import Map from '../../components/parts/Map.vue';
 import { useI18n } from 'vue-i18n';

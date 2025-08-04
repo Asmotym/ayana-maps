@@ -42,11 +42,11 @@
 </template>
 
 <script setup lang="ts">
-import type { DiscordUser } from '../../../netlify/core/types/discord.types';
+import type { DiscordUser } from '../../../../netlify/core/types/discord.types';
 import { ref, onMounted } from 'vue'
-import { DiscordService } from '../../core/services/discord.service';
+import { DiscordService } from '../services/discord.service';
 import { useRouter } from 'vue-router';
-import { Routes } from '../../router';
+import { Routes } from '../../../router';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
