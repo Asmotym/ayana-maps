@@ -27,7 +27,7 @@ import { UserRights } from '../../../netlify/core/types/enum.types';
 import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import DiscordAuth from '../../modules/discord-auth/components/DiscordAuth.vue';
-import LanguageSwitcher from '../../components/header/LanguageSwitcher.vue';
+import LanguageSwitcher from '../../modules/language-switcher/components/LanguageSwitcher.vue';
 import { Routes } from '../../router';
 import { DiscordService } from '../../modules/discord-auth/services/discord.service';
 import { store } from '../store/index.store'
