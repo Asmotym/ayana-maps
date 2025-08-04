@@ -46,8 +46,8 @@ import type { DiscordUser } from '../../../../netlify/core/types/discord.types';
 import { ref, onMounted } from 'vue'
 import { DiscordService } from '../services/discord.service';
 import { useRouter } from 'vue-router';
-import { Routes } from '../../../router';
 import { useI18n } from 'vue-i18n';
+import { HomeRoutes } from '../../../core/routes/home.route';
 
 const { t } = useI18n();
 
@@ -58,7 +58,7 @@ const user = ref<DiscordUser | null>(null)
 function logout() {
   discordService.logout();
   user.value = null;
-  router.push({ name: Routes.Home });
+  router.push({ name: HomeRoutes.Base });
 }
 
 onMounted(async () => {

@@ -52,7 +52,8 @@ async function handleRemove(isActive: Ref<boolean, boolean>) {
     isDeleting.value = true;
 
     // remove marker
-    await store.mapMarkers().delete(marker.value);
+    const mapMarkersStore = store.mapMarkers();
+    await mapMarkersStore.delete(marker.value);
 
     // stop loading & close popup
     isDeleting.value = false;

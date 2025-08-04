@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Header from '../components/Header.vue';
 import { DiscordService } from '../../modules/discord-auth/services/discord.service';
 import { computed } from 'vue';
 import Map from '../../modules/map/layouts/Map.vue';
@@ -13,6 +14,7 @@ const userLoggedIn = computed(() => {
 </script>
 
 <template>
+  <Header />
   <v-container v-if="userLoggedIn" class="pa-0" fluid>
     <Map />
   </v-container>

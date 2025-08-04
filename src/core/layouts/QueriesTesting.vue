@@ -1,4 +1,5 @@
 <template>
+    <Header />
     <!-- Database Status Section -->
     <v-card class="queries-testing">
         <template #title>{{ t('testing_ground.title') }}</template>
@@ -35,6 +36,7 @@
 </template>
 
 <script setup lang="ts">
+import Header from '../components/Header.vue';
 import { ref, onMounted } from 'vue'
 import { DiscordService } from '../../modules/discord-auth/services/discord.service'
 import { useI18n } from 'vue-i18n'
@@ -51,13 +53,16 @@ async function performQuery(queryType: string) {
     loadingQuery.value = queryType
     switch (queryType) {
         case 'get_current_user':
-            dbData.value = await store.user().getUser(DiscordService.getInstance().getUser()?.id as string)
+            const userStore = store.user()
+            dbData.value = await userStore.getUser(DiscordService.getInstance().getUser()?.id as string)
             break
         case 'map_markers':
-            dbData.value = await store.mapMarkers().getAll()
+            const mapMarkersStore = store.mapMarkers()
+            dbData.value = await mapMarkersStore.getAll()
             break
         case 'marker_categories':
-            dbData.value = await store.markerCategories().getAll()
+            const markerCategoriesStore = store.markerCategories()
+            dbData.value = await markerCategoriesStore.getAll()
             break
     }
     loadingQuery.value = null

@@ -5,11 +5,11 @@
         </template>
 
         <v-container class="d-flex justify-center align-center">
-            <v-btn variant="text" :to="{ name: Routes.Home }">
+            <v-btn variant="text" :to="{ name: HomeRoutes.Base }">
                 <span>{{ t('navigation.home') }}</span>
             </v-btn>
     
-            <v-btn v-if="isUserLoggedIn && userHasTestingGroundRights" variant="text" :to="{ name: Routes.TestingGround }">
+            <v-btn v-if="isUserLoggedIn && userHasTestingGroundRights" variant="text" :to="{ name: TestingGroundRoutes.Base }">
                 <span>{{ t('navigation.testing_ground') }}</span>
             </v-btn>
         </v-container>
@@ -28,9 +28,9 @@ import { computed, onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import DiscordAuth from '../../modules/discord-auth/components/DiscordAuth.vue';
 import LanguageSwitcher from '../../modules/language-switcher/components/LanguageSwitcher.vue';
-import { Routes } from '../../router';
 import { DiscordService } from '../../modules/discord-auth/services/discord.service';
 import { store } from '../store/index.store'
+import { HomeRoutes, TestingGroundRoutes } from '../routes';
 
 const { t } = useI18n();
 const discordService = DiscordService.getInstance();
@@ -43,7 +43,8 @@ const userHasTestingGroundRights = ref(false);
 onMounted(async () => {
     const user = DiscordService.getInstance().getUser();
     if (!user) return;
-    userHasTestingGroundRights.value = await store.user().isUserAuthorized(user.id, UserRights.TESTING_GROUND);
+    const userStore = store.user();
+    userHasTestingGroundRights.value = await userStore.isUserAuthorized(user.id, UserRights.TESTING_GROUND);
 });
 </script>
 

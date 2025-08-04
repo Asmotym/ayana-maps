@@ -14,8 +14,8 @@
             <v-card-text>
                 <v-form v-model="valid">
                     <v-text-field counter="255" :label="t('marker_dialog.label')" v-model="label" :rules="labelRules" />
-                    <v-select :label="t('marker_dialog.category')" v-model="category" :items="store.markerCategories().markerCategories" item-title="name" item-value="id"
-                        :rules="categoryRules" />
+                                    <v-select :label="t('marker_dialog.category')" v-model="category" :items="markerCategoriesStore.markerCategories" item-title="name" item-value="id"
+                    :rules="categoryRules" />
                     <v-textarea :label="t('marker_dialog.description')" v-model="description" :rules="descriptionRules" />
                     <v-btn class="mt-4" variant="outlined" color="primary" density="comfortable" :disabled="!valid"
                         block @click="handleSubmit">
@@ -87,8 +87,10 @@ const descriptionRules = ref<((value: string) => string | boolean)[]>([
 ]);
 const category = ref<number | null>(null);
 
+const markerCategoriesStore = store.markerCategories();
+
 onMounted(async () => {
-    await store.markerCategories().getAll();
+    await markerCategoriesStore.getAll();
 });
 
 function resetForm() {
@@ -109,7 +111,8 @@ async function handleSubmit() {
     } as DatabaseMapMarker;
 
     logger.info('Adding new marker', { marker, category: category.value });
-    await store.mapMarkers().insert(marker);
+    const mapMarkersStore = store.mapMarkers();
+    await mapMarkersStore.insert(marker);
     dialogActive.value = false;
     emit('marker:added', marker);
     resetForm();

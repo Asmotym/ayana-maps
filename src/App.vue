@@ -2,16 +2,12 @@
   <v-responsive>
     <v-app>
       <v-main class="app">
-        <Header />
         <router-view />
       </v-main>
     </v-app>
   </v-responsive>
 </template>
 
-<script setup lang="ts">
-import Header from './core/components/Header.vue';
-</script>
 
 <style scoped>
 .app {

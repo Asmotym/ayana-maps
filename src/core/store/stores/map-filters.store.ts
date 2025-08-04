@@ -58,7 +58,8 @@ export const useMapFiltersStore = defineStore('map-filters', {
     }),
     actions: {
         async setupCategories() {
-            let markerCategories = await store.markerCategories().getAll() as MarkerCategoryFilter[];
+            const markerCategoriesStore = store.markerCategories();
+            let markerCategories = await markerCategoriesStore.getAll() as MarkerCategoryFilter[];
             markerCategories = markerCategories.map((category) => ({ ...category, ...{ active: true } }));
             const categoriesSectionIndex = this.findFiltersSectionIndex(MapFiltersSection.CATEGORIES);
             if (categoriesSectionIndex > -1) {
