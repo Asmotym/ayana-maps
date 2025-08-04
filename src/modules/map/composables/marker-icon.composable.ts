@@ -1,5 +1,5 @@
-import type { DatabaseMapMarker } from "../../netlify/core/types/database.types";
-import { MarkerCategoryMapping } from "../../netlify/core/types/enum.types";
+import type { DatabaseMapMarker } from "../../../../netlify/core/types/database.types";
+import { MarkerCategoryMapping } from "../../../../netlify/core/types/enum.types";
 import L from "leaflet";
 
 type SizeExpression = { size: L.PointExpression, anchor: L.PointExpression };
@@ -65,23 +65,29 @@ const markerCavern = L.icon({
     iconAnchor: sizeSmall.anchor,
 })
 
-export function getMarkerIconFromMarker(marker: DatabaseMapMarker): L.Icon {
-    switch (marker.category_id) {
-        case MarkerCategoryMapping.City:
-            return markerCity;
-        case MarkerCategoryMapping.Village:
-            return markerVillage;
-        case MarkerCategoryMapping.Capital:
-            return markerCapital;
-        case MarkerCategoryMapping.Fortress:
-            return markerFortress;
-        case MarkerCategoryMapping.Ruin:
-            return markerRuin;
-        case MarkerCategoryMapping.Mine:
-            return markerMine;
-        case MarkerCategoryMapping.Cavern:
-            return markerCavern;
-        default:
-            return markerDefault;
+export function useMarkerIcon() {
+    function getMarkerIconFromMarker(marker: DatabaseMapMarker): L.Icon {
+        switch (marker.category_id) {
+            case MarkerCategoryMapping.City:
+                return markerCity;
+            case MarkerCategoryMapping.Village:
+                return markerVillage;
+            case MarkerCategoryMapping.Capital:
+                return markerCapital;
+            case MarkerCategoryMapping.Fortress:
+                return markerFortress;
+            case MarkerCategoryMapping.Ruin:
+                return markerRuin;
+            case MarkerCategoryMapping.Mine:
+                return markerMine;
+            case MarkerCategoryMapping.Cavern:
+                return markerCavern;
+            default:
+                return markerDefault;
+        }
+    }
+
+    return {
+        getMarkerIconFromMarker
     }
 }

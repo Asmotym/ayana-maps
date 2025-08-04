@@ -25,9 +25,9 @@ import { VContainer } from 'vuetify/lib/components/index.mjs';
 import Marker from '../components/Marker.vue';
 import MapActionAdd from '../components/MapActionAdd.vue';
 import MapFilters from '../components/MapFilters.vue';
-import { useMapDimensions } from '../composables/useMapDimensions';
-import { useMapInteraction } from '../composables/useMapInteraction';
-import { useMapMarkers } from '../composables/useMapMarkers';
+import { useMapDimensions } from '../composables/map-dimensions.composable';
+import { useMapInteraction } from '../composables/map-interaction.composable';
+import { useMapMarkers } from '../composables/map-markers.composable';
 
 // Component state
 const loading = ref<boolean>(true);

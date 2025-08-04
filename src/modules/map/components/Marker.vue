@@ -35,10 +35,11 @@ import type { DatabaseMapMarker } from '../../../../netlify/core/types/database.
 import { computed, defineProps, ref, defineExpose, onMounted } from 'vue';
 import MarkerActions from './marker/MarkerActions.vue';
 import { useLogger } from 'vue-logger-plugin';
-import { getMarkerIconFromMarker } from '../../../helpers/markers-icon.helper';
+import { useMarkerIcon } from '../composables/marker-icon.composable';
 import * as L from 'leaflet';
 
 const logger = useLogger();
+const { getMarkerIconFromMarker } = useMarkerIcon();
 
 const props = defineProps<{
     marker: DatabaseMapMarker;
